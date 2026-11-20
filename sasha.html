@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Саша — персонаж сайта</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>try{const t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+  .play{padding:var(--s5) 0 var(--s6)}
+  .play h1{margin-bottom:var(--s2)}
+  .play .lead{max-width:60ch}
+  .demos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:var(--s5)}
+  .demo{position:relative;height:320px;border:1px solid var(--line);border-radius:var(--r-media);overflow:hidden}
+  .demo-meta{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-top:var(--s2)}
+  .demo-meta b{font-weight:500}
+  .demo-meta p{margin-top:4px}
+  .replay{font:500 13px/20px "Onest",sans-serif;color:var(--ink);background:none;border:1px solid var(--line);border-radius:var(--r-ctl);padding:6px 12px;cursor:pointer;white-space:nowrap}
+  .replay:hover{border-color:var(--ink)}
+  .box{position:absolute;inset:0}
+  /* мини-тулбар */
+  .mini{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;align-items:center;gap:2px;padding:6px;border:1px solid var(--line);border-radius:16px;background:var(--bg);z-index:2}
+  .mini span{height:36px;display:flex;align-items:center;padding:0 12px;border-radius:10px;font:500 14px/1 "Onest",sans-serif;color:var(--muted);white-space:nowrap}
+  .mini .ae{color:var(--ink);font-weight:600}
+  .mini .sep{width:1px;height:20px;background:var(--line);padding:0;margin:0 4px}
+  .demo .clip{position:absolute;width:220px;height:190px;pointer-events:none}
+  .demo .sa-say{position:absolute}
+  .ground{position:absolute;left:0;right:0;border-top:1px solid var(--line)}
+  .stage-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:var(--s5)}
+  .sheet{border:1px solid var(--line);border-radius:var(--r-media);height:260px;position:relative;overflow:hidden}
+  .sheet .t-cap{position:absolute;left:16px;top:12px}
+  @media (max-width:900px){.demos,.stage-row{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<main class="wrap play">
+  <h1 class="t-h2">Саша — персонаж сайта</h1>
+  <p class="t-lead muted lead">Стиль outlined cartoon: плоские цвета, тёплый чернильный контур, большая голова. Узнаётся по коку, круглым очкам, белой футболке и карандашу за ухом. В тёмной теме — светлая обводка-наклейка. Три сценария на одном риге.</p>
+
+  <div class="demos">
+    <div>
+      <div class="demo" id="d-peek">
+        <div class="clip"></div>
+        <div class="sa-say" aria-hidden="true">Привет! Я Саша</div>
+        <div class="mini"><span class="ae">АЕ</span><span class="sep"></span><span>Работы</span><span>Обо мне</span></div>
+      </div>
+      <div class="demo-meta"><div><b>1 · Выглядывает и машет</b><p class="t-cap">Из-за тулбара над «АЕ», один раз за сессию. Потом — по наведению на «АЕ».</p></div><button class="replay" data-run="peek">Повторить</button></div>
+    </div>
+    <div>
+      <div class="demo" id="d-walk"><div class="ground" style="bottom:56px"></div><div class="box"></div></div>
+      <div class="demo-meta"><div><b>2 · Идёт с ноутбуком и думает</b><p class="t-cap">Из угла в угол, над головой — облачко с мыслью.</p></div><button class="replay" data-run="walk">Повторить</button></div>
+    </div>
+    <div>
+      <div class="demo" id="d-sit"><div class="ground" style="bottom:72px"></div><div class="box"></div></div>
+      <div class="demo-meta"><div><b>3 · Сидит задумчиво</b><p class="t-cap">Приходит и садится на линию. Наведите — помашет.</p></div><button class="replay" data-run="sit">Повторить</button></div>
+    </div>
+  </div>
+
+  <div class="stage-row">
+    <div class="sheet" id="s1"><span class="t-cap">Стоит</span></div>
+    <div class="sheet" id="s2"><span class="t-cap">Машет</span></div>
+    <div class="sheet" id="s3"><span class="t-cap">Думает</span></div>
+  </div>
+
+  <p class="t-cap" style="margin-top:var(--s4)"><button class="theme-btn" data-theme-toggle>Тема: авто</button></p>
+</main>
+
+<script src="assets/sasha.js"></script>
+<script>
+(() => {
+  const { stage, scenes, poses, EDGE, HEAD_ABOVE_EDGE, DEF } = window.Sasha;
+  const $ = s => document.querySelector(s);
+
+  /* 1 — выглядывает */
+  const dp = $('#d-peek'), clip = $('.clip', dp), say = $('.sa-say', dp), ae = $('.mini .ae', dp), mini = $('.mini', dp);
+  const pr = stage(clip, { scale: () => .62, bottom: EDGE, originX: 'center' });
+  const placePeek = () => {
+    const d = dp.getBoundingClientRect(), a = ae.getBoundingClientRect(), t = mini.getBoundingClientRect();
+    const cx = a.left + a.width / 2 - d.left;
+    clip.style.left = (cx - clip.offsetWidth / 2) + 'px';
+    clip.style.top = (t.top - d.top - clip.offsetHeight) + 'px';
+    say.style.left = (cx + 6) + 'px';
+    say.style.top = (t.top - d.top - HEAD_ABOVE_EDGE * .62 - 8) + 'px';
+  };
+  placePeek(); addEventListener('resize', placePeek);
+  pr.set(poses.P_HIDE);
+  ae.addEventListener('mouseenter', () => { say.classList.remove('on'); scenes.peekHi(pr); });
+  ae.addEventListener('mouseleave', () => scenes.duck(pr));
+
+  /* 2 — идёт */
+  const dw = $('#d-walk .box');
+  const wr = stage(dw, { scale: () => .62, bottom: 56 / .62, originX: 0 });
+  let dir = 1;
+  const walk = () => {
+    const l = 60, rgt = wr.W - 60;
+    wr.set({ ...DEF, x: dir > 0 ? l : rgt });
+    scenes.stroll(wr, dir > 0 ? rgt : l);
+    dir = -dir;
+  };
+
+  /* 3 — сидит */
+  const ds = $('#d-sit .box');
+  const sr = stage(ds, { scale: () => .62, bottom: 72 / .62, originX: 0 });
+  let sitting = false;
+  const sit = async () => {
+    sitting = false;
+    sr.set({ ...DEF, x: sr.W + 60 });
+    sitting = await scenes.arrive(sr, sr.W * .5);
+  };
+  sr.hit.style.pointerEvents = 'all';
+  sr.hit.addEventListener('pointerenter', () => { if (sitting) scenes.sitHi(sr); });
+  sr.hit.addEventListener('pointerleave', () => { if (sitting) scenes.sitBack(sr); });
+
+  const run = { peek: () => { placePeek(); scenes.greet(pr, say); }, walk, sit };
+  document.querySelectorAll('[data-run]').forEach(b => b.addEventListener('click', () => run[b.dataset.run]()));
+
+  /* статичные позы */
+  const sheet = (id, pose) => {
+    const el = $(id);
+    const r = stage(el, { scale: () => .7, bottom: 40 / .7, originX: 'center' });
+    r.set({ ...DEF, ...pose });
+    return r;
+  };
+  sheet('#s1', { mouth: 1 });
+  sheet('#s2', { ...poses.P_WAVE, mouth: 2 });
+  sheet('#s3', { ...poses.SIT, y: -60 });
+
+  setTimeout(() => { run.peek(); walk(); sit(); }, 400);
+
+  /* тема */
+  const modes = ['auto', 'light', 'dark'], names = { auto: 'авто', light: 'светлая', dark: 'тёмная' };
+  const root = document.documentElement; let mode = root.dataset.theme || 'auto';
+  const btn = $('[data-theme-toggle]'); const paint = () => { btn.textContent = 'Тема: ' + names[mode]; }; paint();
+  btn.addEventListener('click', () => {
+    mode = modes[(modes.indexOf(mode) + 1) % 3];
+    if (mode === 'auto') delete root.dataset.theme; else root.dataset.theme = mode;
+    try { mode === 'auto' ? localStorage.removeItem('theme') : localStorage.setItem('theme', mode); } catch (e) {}
+    paint();
+  });
+})();
+</script>
+</body>
+</html>

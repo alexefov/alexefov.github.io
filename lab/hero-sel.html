@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Выделение слова — варианты</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  main{overflow-x:clip}
+  .lab-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:16px;color:var(--muted)}
+  .sw{display:flex;flex-wrap:wrap;gap:4px}
+  .sw button{font:inherit;color:var(--muted);background:none;border:1px solid var(--line);border-radius:8px;padding:2px 10px;cursor:pointer}
+  .sw button.on{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+  .hx{min-height:calc(100svh - 40px);display:flex;flex-direction:column;padding:var(--s4) 0}
+  .hx-top{display:flex;justify-content:space-between;align-items:baseline;gap:24px}
+  .hx-top .name{font-weight:500}.hx-top .lk{display:flex;gap:32px}
+  .hx-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:var(--s5) 0}
+  .hint{font-size:13px;line-height:20px;color:var(--muted);margin-bottom:var(--s3)}
+
+  .ttl{position:relative;font-weight:600;line-height:.92;letter-spacing:-.048em;white-space:nowrap}
+  .ttl .ln{display:block;width:max-content}
+  .ttl .hang{margin-right:-.24em}
+  .ttl .opt{margin-left:-.035em}
+  .wd{position:relative;display:inline-block;font:inherit;letter-spacing:inherit;line-height:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer}
+  .wd:focus-visible{outline:2px solid var(--sel);outline-offset:4px}
+  .rest,.wd{transition:color .3s var(--ease),filter .4s var(--ease),opacity .4s var(--ease)}
+
+  .row{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;margin-top:var(--s5);align-items:start}
+  .lead{grid-column:1/6;color:var(--muted);max-width:44ch}
+  .lead b{color:var(--ink);font-weight:500}
+  .ctx{grid-column:8/13;display:grid}
+  .ctx>div{grid-area:1/1;opacity:0;transform:translateY(6px);transition:opacity .3s var(--ease),transform .4s var(--ease)}
+  .ctx>div.on{opacity:1;transform:none}
+  .ctx b{display:block;font-weight:500}.ctx span{color:var(--muted)}
+
+  /* 1 · Рамка Figma */
+  .sel{position:absolute;border:1.5px solid var(--sel);pointer-events:none;opacity:0;transition:left .35s var(--ease),top .35s var(--ease),width .35s var(--ease),height .35s var(--ease),opacity .2s}
+  .sel.on{opacity:1}.sel.jump{transition:opacity .2s}
+  .sel i{position:absolute;width:9px;height:9px;background:var(--bg);border:1.5px solid var(--sel)}
+  .sel i:nth-child(1){left:-5px;top:-5px}.sel i:nth-child(2){right:-5px;top:-5px}.sel i:nth-child(3){left:-5px;bottom:-5px}.sel i:nth-child(4){right:-5px;bottom:-5px}
+  .sel em{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);font:500 11px/16px Onest,sans-serif;letter-spacing:0;font-style:normal;color:#fff;background:var(--sel);border-radius:4px;padding:1px 6px;white-space:nowrap}
+  body:not([data-v="frame"]) .sel{display:none}
+
+  /* 2 · Инверсия: чёрная плашка заезжает под слово, как активный пункт тулбара */
+  .plate{position:absolute;background:var(--ink);border-radius:.08em;pointer-events:none;opacity:0;z-index:0;
+         transition:left .4s var(--ease),top .4s var(--ease),width .4s var(--ease),height .4s var(--ease),opacity .2s}
+  .plate.on{opacity:1}.plate.jump{transition:opacity .2s}
+  body:not([data-v="invert"]) .plate{display:none}
+  body[data-v="invert"] .ln{position:relative;z-index:1}
+  body[data-v="invert"] .wd.on{color:var(--bg)}
+
+  /* 3 · Линия: толстая черта растёт слева направо под словом */
+  body[data-v="line"] .wd::after{content:"";position:absolute;left:0;right:0;bottom:-.06em;height:.07em;background:var(--ink);transform:scaleX(0);transform-origin:0 50%;transition:transform .5s var(--ease)}
+  body[data-v="line"] .wd.on::after{transform:none}
+  body[data-v="line"] .ttl .ln{padding-bottom:.08em}
+
+  /* 4 · Волна: буквы слова по очереди подпрыгивают */
+  .wd .ch{display:inline-block;transition:transform .45s cubic-bezier(.3,1.6,.5,1)}
+  body[data-v="wave"] .wd.on .ch{transform:translateY(-.1em)}
+
+  /* 5 · Фокус: остальное уходит в расфокус, слово остаётся резким */
+  body[data-v="blur"] .ttl.has .rest,body[data-v="blur"] .ttl.has .wd:not(.on){filter:blur(.05em);opacity:.35}
+
+  @media (max-width:900px){.lead,.ctx{grid-column:1/13}}
+  @media (max-width:600px){.ttl{white-space:normal}.ttl .ln{width:auto}.ttl{font-size:clamp(40px,12.5vw,64px)!important}}
+</style>
+</head>
+<body data-v="frame">
+<main class="wrap">
+  <div class="lab-top t-cap"><a class="link" href="../index.html">← Главная</a>
+    <div class="sw"><button data-v="frame">1 · Рамка Figma</button><button data-v="invert">2 · Инверсия</button><button data-v="line">3 · Линия</button><button data-v="wave">4 · Волна</button><button data-v="blur">5 · Фокус</button></div>
+  </div>
+  <section class="hx">
+    <div class="hx-top"><span class="name">Александр Ефремов</span><span class="lk"><a class="link" href="../cv.html">CV</a><a class="link" href="../index.html#contact">Написать</a></span></div>
+    <div class="hx-body">
+      <h1 class="ttl" id="ttl" aria-label="Проектирую продукты, системы и команды">
+        <span class="ln"><span class="rest">Проектирую </span><button class="wd" data-k="products">продукты</button><span class="rest hang">,</span></span>
+        <span class="ln opt"><button class="wd" data-k="systems">системы</button><span class="rest"> и </span><button class="wd" data-k="teams">команды</button></span>
+        <span class="sel" aria-hidden="true"><i></i><i></i><i></i><i></i><em></em></span>
+        <span class="plate" aria-hidden="true"></span>
+      </h1>
+      <div class="row">
+        <p class="lead"><b>Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: сам проектирую ключевые сценарии и дизайн-систему — и помогаю команде расти.</p>
+        <div class="ctx" aria-live="polite">
+          <div data-k="products"><b>Sminex Comfort, Портал строителя, Unity Finance</b><span>Мобильные приложения, веб-порталы, торговая платформа</span></div>
+          <div data-k="systems"><b>Sminex Design System</b><span>Брендбук → токены → 6 UI-китов, светлая и тёмная темы</span></div>
+          <div data-k="teams"><b>UX/UI-направление с нуля</b><span>10 дизайнеров, найм, менторство, ревью, DoR / DoD</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  const ttl = document.getElementById('ttl'), words = [...ttl.querySelectorAll('.wd')], ctx = [...document.querySelectorAll('.ctx>div')];
+  const sel = ttl.querySelector('.sel'), plate = ttl.querySelector('.plate'), label = sel.querySelector('em');
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  // буквы для «волны»
+  words.forEach(w => { w.setAttribute('aria-label', w.textContent); w.innerHTML = [...w.textContent].map((c, i) => `<span class="ch" aria-hidden="true" style="transition-delay:${i * 28}ms">${c}</span>`).join(''); });
+
+  let cur = null;
+  const box = (el, w, padX, top, h) => {
+    const tr = ttl.getBoundingClientRect(), r = w.getBoundingClientRect(), fs = parseFloat(getComputedStyle(ttl).fontSize);
+    Object.assign(el.style, { left: (r.left - tr.left - padX * fs) + 'px', top: (r.top - tr.top + top * fs) + 'px', width: (r.width + 2 * padX * fs) + 'px', height: (h * fs) + 'px' });
+  };
+  const set = w => {
+    const was = cur; cur = w;
+    words.forEach(x => x.classList.toggle('on', x === w));
+    ctx.forEach(c => c.classList.toggle('on', !!w && c.dataset.k === w.dataset.k));
+    ttl.classList.toggle('has', !!w);
+    [sel, plate].forEach(el => { if (w && !was) el.classList.add('jump'); });
+    if (w) {
+      box(sel, w, .05, .1, 1.02);
+      box(plate, w, .06, .12, .98);
+      const r = w.getBoundingClientRect(); label.textContent = `${Math.round(r.width)} × ${Math.round(r.height)}`;
+    }
+    sel.getBoundingClientRect(); sel.classList.remove('jump'); plate.classList.remove('jump');
+    sel.classList.toggle('on', !!w); plate.classList.toggle('on', !!w);
+  };
+  words.forEach(w => {
+    if (fine) { w.addEventListener('mouseenter', () => set(w)); w.addEventListener('mouseleave', () => set(null)); }
+    w.addEventListener('focus', () => set(w)); w.addEventListener('blur', () => set(null));
+    w.addEventListener('click', () => { if (!fine) set(cur === w ? null : w); });
+  });
+
+  // общий кегль: по самой длинной строке
+  const fit = () => {
+    if (innerWidth <= 600) { ttl.style.fontSize = ''; return; }
+    ttl.style.fontSize = '100px';
+    const widest = Math.max(...[...ttl.querySelectorAll('.ln')].map(l => l.scrollWidth));
+    ttl.style.fontSize = Math.min(98 * ttl.clientWidth / widest, innerHeight * .22) + 'px';
+  };
+  const pick = v => {
+    set(null); document.body.dataset.v = v;
+    document.querySelectorAll('.sw button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+    try { history.replaceState(null, '', '#' + v); } catch (e) {}
+  };
+  document.querySelectorAll('.sw button').forEach(b => b.addEventListener('click', () => pick(b.dataset.v)));
+  const h = location.hash.slice(1); pick(['frame', 'invert', 'line', 'wave', 'blur'].includes(h) ? h : 'frame');
+  fit(); addEventListener('resize', fit); document.fonts && document.fonts.ready.then(fit);
+})();
+</script>
+</body>
+</html>

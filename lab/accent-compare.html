@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Сравнение акцента</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script>try{const t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+  /* ---------- Варианты акцента ---------- */
+  :root{--acc:#0D99FF;--acc-on:#FFFFFF;--g:#F2475A;--g-style:solid}
+  :root[data-acc="2"]{--acc:#E8590C;--acc-on:#111113;--g:var(--ink);--g-style:dashed}
+  :root[data-acc="3"]{--acc:#C46A06;--acc-on:#111113;--g:var(--ink);--g-style:dashed}
+  :root[data-theme=dark]{--g:#FF6274}
+  :root[data-theme=dark][data-acc="2"]{--acc:#FF6B2C;--g:var(--ink)}
+  :root[data-theme=dark][data-acc="3"]{--acc:#F59E0B;--g:var(--ink)}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme=light]){--g:#FF6274}
+    :root:not([data-theme=light])[data-acc="2"]{--acc:#FF6B2C;--g:var(--ink)}
+    :root:not([data-theme=light])[data-acc="3"]{--acc:#F59E0B;--g:var(--ink)}
+  }
+
+  main{padding-top:var(--s5);padding-bottom:var(--s6)}
+  .intro{max-width:64ch}
+  .intro p{margin-top:var(--s2)}
+
+  /* ---------- Панель выбора ---------- */
+  .ctl{position:sticky;top:12px;z-index:60;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-top:var(--s4);padding:6px;border:1px solid var(--line);border-radius:16px;background:color-mix(in srgb,var(--bg) 86%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);width:max-content;max-width:100%}
+  .seg{display:flex;gap:2px;flex-wrap:wrap}
+  .seg button{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;border:0;border-radius:10px;background:none;font:500 14px/1 "Onest",sans-serif;color:var(--muted);cursor:pointer;transition:color .15s,background .15s}
+  .seg button:hover{color:var(--ink)}
+  .seg button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+  .seg i{width:10px;height:10px;border-radius:50%;flex:none}
+  .ctl .sep{width:1px;height:20px;background:var(--line)}
+
+  /* ---------- Образцы ---------- */
+  .spec{padding-top:var(--s6)}
+  .spec-h{display:flex;justify-content:space-between;gap:24px;align-items:baseline;margin-bottom:var(--s3);padding-bottom:var(--s2);border-bottom:1px solid var(--line)}
+  .spec-h p{max-width:56ch;text-align:right}
+
+  /* 1 — Первый экран */
+  .h-demo{font-size:clamp(40px,7vw,104px);line-height:.92;font-weight:600;letter-spacing:-.05em}
+  .h-demo .w{text-decoration:underline;text-decoration-thickness:.04em;text-underline-offset:.1em;text-decoration-color:color-mix(in srgb,var(--acc) 45%,transparent);cursor:pointer;transition:color .3s var(--ease),text-decoration-color .3s var(--ease)}
+  .h-demo .w.on{text-decoration-color:var(--acc)}
+  .h-demo.has .r,.h-demo.has .w:not(.on){color:color-mix(in srgb,var(--ink) 16%,transparent);text-decoration-color:transparent}
+  :root[data-acc="1"] .h-demo .w{text-decoration-color:color-mix(in srgb,var(--ink) 20%,transparent)}
+  :root[data-acc="1"] .h-demo .w.on{text-decoration-color:var(--ink)}
+  .h-row{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;margin-top:var(--s4)}
+  .h-row .sub{grid-column:1/6;color:var(--muted)}
+  .h-row .sub b{color:var(--ink);font-weight:500}
+  .h-ctx{grid-column:8/13;font-size:14px;line-height:22px}
+  .h-ctx b{display:block;font-weight:500}
+  .h-ctx span{color:var(--muted)}
+
+  /* 2 — Сцена с выделением */
+  .stage.frames{position:relative}
+  .shot{position:relative;height:calc(100% - 28px)}
+  .shot img{height:100%;width:auto;max-width:none;border-radius:16px}
+  .xsel{position:absolute;inset:-1px;border:1.5px solid var(--acc);border-radius:2px;pointer-events:none}
+  .xsel i{position:absolute;width:8px;height:8px;background:#fff;border:1.5px solid var(--acc)}
+  .xsel i:nth-child(1){left:-5px;top:-5px}.xsel i:nth-child(2){right:-5px;top:-5px}.xsel i:nth-child(3){left:-5px;bottom:-5px}.xsel i:nth-child(4){right:-5px;bottom:-5px}
+  .xsel b{position:absolute;left:50%;bottom:-28px;transform:translateX(-50%);font:500 11px/1 "Onest",sans-serif;letter-spacing:.02em;background:var(--acc);color:var(--acc-on);padding:4px 6px;border-radius:4px;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .guide{position:absolute;height:0;border-top:1px var(--g-style) var(--g);pointer-events:none}
+  .guide::before,.guide::after{content:"";position:absolute;top:-5px;width:0;height:9px;border-left:1px solid var(--g)}
+  .guide::before{left:0}.guide::after{right:0}
+  .guide b{position:absolute;left:50%;top:8px;transform:translateX(-50%);font:500 11px/1 "Onest",sans-serif;padding:3px 5px;border-radius:4px;background:var(--g);color:#fff;white-space:nowrap}
+  :root[data-acc="2"] .guide b,:root[data-acc="3"] .guide b{background:var(--stage-ink);color:var(--stage)}
+  :root[data-acc="2"] .guide,:root[data-acc="3"] .guide,:root[data-acc="2"] .guide::before,:root[data-acc="2"] .guide::after,:root[data-acc="3"] .guide::before,:root[data-acc="3"] .guide::after{border-color:color-mix(in srgb,var(--stage-ink) 70%,transparent)}
+
+  /* 3 — Меню */
+  .tb-demo{display:flex;justify-content:center;padding:var(--s4) 0}
+  .tb-demo .toolbar{position:static;transform:none}
+  .tb-demo .toolbar a{position:relative}
+  :root:not([data-acc="1"]) .tb-demo .toolbar a.on{background:none;color:var(--ink)}
+  :root:not([data-acc="1"]) .tb-demo .toolbar a.on::after{content:"";position:absolute;left:50%;bottom:3px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--acc)}
+
+  /* 4 — Цифры результата и ссылки */
+  .nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+  .nums .n{display:block;font-size:clamp(36px,4.4vw,64px);line-height:1;font-weight:600;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+  :root:not([data-acc="1"]) .nums .n{color:var(--acc)}
+  .nums p{margin-top:var(--s1)}
+  .links-demo{display:flex;flex-wrap:wrap;gap:12px 32px;margin-top:var(--s5)}
+  .links-demo .fv{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
+  :root:not([data-acc="1"]) .links-demo .fv{outline-color:var(--acc)}
+
+  /* Контраст */
+  .ctr{width:100%;border-collapse:collapse;font-size:14px;line-height:22px;font-variant-numeric:tabular-nums}
+  .ctr th,.ctr td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--line);font-weight:400}
+  .ctr th{color:var(--muted);font-weight:500;font-size:13px}
+  .ctr tr.on td{color:var(--ink);font-weight:500}
+  .ctr tr:not(.on) td{color:var(--muted)}
+  .ctr .ok{color:var(--ink)}
+  .ctr .bad::after{content:" — мало";color:var(--muted);font-weight:400}
+  .ctr i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:0}
+
+  @media (max-width:900px){
+    .spec-h{flex-direction:column;gap:8px}.spec-h p{text-align:left}
+    .h-row{grid-template-columns:1fr}.h-row>*{grid-column:1!important}
+    .nums{grid-template-columns:1fr}
+    .ctl{width:auto}
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="intro">
+    <span class="t-cap">Служебная страница — не для публикации</span>
+    <h1 class="t-h1" style="margin-top:var(--s2)">Акцент: синий или оранжевый</h1>
+    <p class="t-lead muted">Одни и те же элементы главной в трёх вариантах. Выделение показано сразу, без наведения. Переключайте вариант кнопками или клавишами 1, 2, 3; тему — клавишей T.</p>
+  </div>
+
+  <div class="ctl" role="group" aria-label="Вариант и тема">
+    <div class="seg" id="acc">
+      <button type="button" data-v="1" aria-pressed="true"><i style="background:#0D99FF"></i>1 · Синий (сейчас)</button>
+      <button type="button" data-v="2" aria-pressed="false"><i style="background:#FF6B2C"></i>2 · Оранжевый</button>
+      <button type="button" data-v="3" aria-pressed="false"><i style="background:#F59E0B"></i>3 · Янтарный</button>
+    </div>
+    <span class="sep"></span>
+    <div class="seg" id="thm">
+      <button type="button" data-t="light" aria-pressed="false">Светлая</button>
+      <button type="button" data-t="dark" aria-pressed="false">Тёмная</button>
+    </div>
+  </div>
+
+  <!-- 1 -->
+  <section class="spec">
+    <div class="spec-h"><h2 class="t-h3">1 · Первый экран</h2><p class="t-cap">Сейчас подчёркивание серое и почти не видно. В оранжевых вариантах акцент подсказывает, что слова живые. Наведите на слово.</p></div>
+    <h3 class="h-demo" id="hd">
+      <span class="r">Проектирую </span><span class="w" data-k="p" tabindex="0">продукты</span><span class="r">,</span><br>
+      <span class="w" data-k="s" tabindex="0">системы</span><span class="r"> и </span><span class="w" data-k="t" tabindex="0">команды</span>
+    </h3>
+    <div class="h-row">
+      <p class="sub t-lead"><b>Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: сам проектирую ключевые сценарии и дизайн-систему — и помогаю команде расти.</p>
+      <div class="h-ctx" id="hc"><b>Наведите на слово</b><span>Покажу, что за ним стоит</span></div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="spec">
+    <div class="spec-h"><h2 class="t-h3">2 · Сцена кейса: выделение и расстояние</h2><p class="t-cap">Рамка — акцент. В оранжевых вариантах расстояние рисуется пунктиром цветом сцены, иначе красная направляющая сольётся с оранжевой рамкой.</p></div>
+    <div class="stage case-comfort frames" id="stg">
+      <figure class="frame"><figcaption>App Store / Пропуска</figcaption><div class="shot"><img src="../assets/img/comfort/passes.jpg" alt="Экран «Пропуска»" width="645" height="1398"><div class="xsel"><i></i><i></i><i></i><i></i><b>259 × 589</b></div></div></figure>
+      <figure class="frame"><figcaption>App Store / Уведомления</figcaption><div class="shot"><img src="../assets/img/comfort/notifications.jpg" alt="Экран «Уведомления»" width="645" height="1398"></div></figure>
+      <div class="guide" id="gd"><b>32</b></div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="spec">
+    <div class="spec-h"><h2 class="t-h3">3 · Нижнее меню</h2><p class="t-cap">Сейчас активный пункт — чёрная плашка. В оранжевых вариантах — точка акцента, плашка уходит.</p></div>
+    <div class="tb-demo">
+      <nav class="toolbar" aria-label="Образец меню">
+        <a class="mono-mark" href="#">АЕ</a><span class="sep"></span>
+        <a href="#" class="on">Работы</a><a href="#">Подход</a><a href="#">ИИ</a><a href="#">Обо мне</a><a href="#">Опыт</a><a href="#">Контакты</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="spec">
+    <div class="spec-h"><h2 class="t-h3">4 · Цифры результата и фокус</h2><p class="t-cap">Цифры Comfort — акцентом. Ссылки остаются монохромными; кольцо фокуса с клавиатуры — акцентом.</p></div>
+    <div class="nums">
+      <div><span class="n">915 млн ₽</span><p class="muted">Образец: цифра результата Comfort</p></div>
+      <div><span class="n">9 992</span><p class="muted">Образец: пользователи приложения</p></div>
+      <div><span class="n">6 минут</span><p class="muted">Образец: скорость ответа</p></div>
+    </div>
+    <div class="links-demo t-lead">
+      <a class="link" href="#">alex.efov@gmail.com</a>
+      <a class="link fv" href="#">Telegram</a>
+      <a class="link" href="#">Behance</a>
+    </div>
+  </section>
+
+  <!-- Контраст -->
+  <section class="spec">
+    <div class="spec-h"><h2 class="t-h3">Контраст в текущей теме</h2><p class="t-cap">Для рамок и точек нужно от 3:1 к фону. Для подписи размера (11px) — от 4,5:1 к акценту.</p></div>
+    <table class="ctr"><thead><tr><th>Вариант</th><th>Акцент</th><th>Рамка к фону</th><th>Рамка к сцене</th><th>Подпись на плашке</th></tr></thead><tbody id="ct"></tbody></table>
+  </section>
+</main>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const accBtns = [...document.querySelectorAll('#acc button')];
+  const thmBtns = [...document.querySelectorAll('#thm button')];
+  const names = {1:'Синий (сейчас)',2:'Оранжевый',3:'Янтарный'};
+
+  const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+
+  function setAcc(v){
+    root.dataset.acc = v;
+    accBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.v === v));
+    try{ localStorage.setItem('lab-acc', v) }catch(e){}
+    table();
+  }
+  function setTheme(t){
+    root.dataset.theme = t;
+    try{ localStorage.setItem('theme', t) }catch(e){}
+    syncTheme();
+  }
+  function syncTheme(){
+    const t = isDark() ? 'dark' : 'light';
+    thmBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.t === t));
+    table();
+  }
+
+  accBtns.forEach(b => b.addEventListener('click', () => setAcc(b.dataset.v)));
+  thmBtns.forEach(b => b.addEventListener('click', () => setTheme(b.dataset.t)));
+  addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (['1','2','3'].includes(e.key)) setAcc(e.key);
+    if (e.key === 't' || e.key === 'T' || e.key === 'е' || e.key === 'Е') setTheme(isDark() ? 'light' : 'dark');
+  });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', syncTheme);
+
+  /* Первый экран: слова */
+  const hd = document.getElementById('hd'), hc = document.getElementById('hc');
+  const ctx = {
+    p:['Sminex Comfort, Портал строителя, Unity Finance','Мобильные приложения, веб-порталы, торговая платформа'],
+    s:['Sminex Design System','Брендбук → токены → 6 UI-китов, светлая и тёмная темы'],
+    t:['UX/UI-направление с нуля','10 дизайнеров, найм, менторство, ревью, DoR / DoD']
+  };
+  const idle = hc.innerHTML;
+  hd.querySelectorAll('.w').forEach(w => {
+    const on = () => { hd.classList.add('has'); hd.querySelectorAll('.w').forEach(x => x.classList.toggle('on', x === w)); const [a,b] = ctx[w.dataset.k]; hc.innerHTML = `<b>${a}</b><span>${b}</span>`; };
+    const off = () => { hd.classList.remove('has'); w.classList.remove('on'); hc.innerHTML = idle; };
+    w.addEventListener('mouseenter', on); w.addEventListener('mouseleave', off);
+    w.addEventListener('focus', on); w.addEventListener('blur', off);
+  });
+
+  /* Направляющая между кадрами */
+  const stg = document.getElementById('stg'), gd = document.getElementById('gd');
+  function guide(){
+    const [a,b] = stg.querySelectorAll('.shot');
+    const s = stg.getBoundingClientRect(), ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+    const x1 = ra.right - s.left, x2 = rb.left - s.left;
+    gd.style.left = x1 + 'px'; gd.style.width = (x2 - x1) + 'px';
+    gd.style.top = (ra.top - s.top + ra.height * .5) + 'px';
+    gd.querySelector('b').textContent = Math.round(x2 - x1);
+  }
+  addEventListener('resize', guide);
+  stg.querySelectorAll('img').forEach(i => i.complete ? guide() : i.addEventListener('load', guide));
+
+  /* Контраст */
+  const P = {
+    light:{bg:'#F5F5F5',stage:'#15130F',1:['#0D99FF','#FFFFFF'],2:['#E8590C','#111113'],3:['#C46A06','#111113']},
+    dark:{bg:'#1E1E1E',stage:'#15130F',1:['#0D99FF','#FFFFFF'],2:['#FF6B2C','#111113'],3:['#F59E0B','#111113']}
+  };
+  const lum = h => { const c = [1,3,5].map(i => parseInt(h.slice(i,i+2),16)/255).map(x => x <= .03928 ? x/12.92 : ((x+.055)/1.055)**2.4); return .2126*c[0]+.7152*c[1]+.0722*c[2]; };
+  const cr = (a,b) => { const [x,y] = [lum(a),lum(b)].sort((p,q) => q-p); return (x+.05)/(y+.05); };
+  const f = (v,min) => `<span class="${v>=min?'ok':'bad'}">${v.toFixed(2).replace('.',',')}:1</span>`;
+  function table(){
+    const p = P[isDark() ? 'dark' : 'light'], cur = root.dataset.acc || '1';
+    document.getElementById('ct').innerHTML = ['1','2','3'].map(v => {
+      const [a,on] = p[v];
+      return `<tr class="${v===cur?'on':''}"><td>${v} · ${names[v]}</td><td><i style="background:${a}"></i>${a}</td><td>${f(cr(a,p.bg),3)}</td><td>${f(cr(a,p.stage),3)}</td><td>${f(cr(a,on),4.5)}</td></tr>`;
+    }).join('');
+  }
+
+  let saved = '1'; try{ saved = localStorage.getItem('lab-acc') || '1' }catch(e){}
+  setAcc(saved); syncTheme();
+})();
+</script>
+</body>
+</html>

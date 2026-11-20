@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Прототип C — Одна система, много продуктов</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  .lab-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;padding-top:var(--s4)}
+  .lab-hero>*{min-width:0}
+  .lab-hero{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:center;min-height:calc(100svh - 120px);padding:var(--s4) 0 var(--s6)}
+  .lab-hero .txt{grid-column:1/6}
+  .lab-hero .txt h1{font-size:clamp(36px,min(4.2vw,9vh),72px);line-height:1.04;letter-spacing:-.035em}
+  .lab-hero .txt p{margin-top:var(--s3);max-width:42ch}
+  .lab-hero .ill{grid-column:6/13}
+
+  /* ===== Одна система — много продуктов ===== */
+  .lc{--ac:var(--ink);--on:var(--bg);--rc:12px;--gp:10px;--hl:#0D99FF;position:relative}
+  .lc-scene{perspective:2600px;perspective-origin:50% 40%}
+  .lc-plane{position:relative;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,2.6fr) minmax(0,1fr);gap:40px 28px;align-items:end;
+    transform-style:preserve-3d;transition:transform 1s var(--ease);padding:12px 0}
+  .lc.iso .lc-plane{transform:translateY(4%) rotateX(52deg) rotateZ(-30deg) scale(.82)}
+  .lc-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:3}
+  .lc-lines path{fill:none;stroke:var(--hl);stroke-width:1.2;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset .7s var(--ease)}
+  .lc-lines path.on{stroke-dashoffset:0}
+  .lc-lines circle{fill:var(--hl);opacity:0;transition:opacity .3s .5s}
+  .lc-lines circle.on{opacity:1}
+  /* колонка токенов */
+  .lc-tokens{display:flex;flex-direction:column;align-self:stretch;justify-content:center;border-top:1px solid var(--line)}
+  .lt{position:relative;display:flex;flex-direction:column;gap:4px;padding:12px 18px 12px 0;border-bottom:1px solid var(--line);background:none;border-left:0;border-right:0;border-top:0;font:inherit;color:inherit;text-align:left;cursor:pointer;transition:color .2s}
+  .lt span{font-size:12px;line-height:18px;color:var(--muted)}
+  .lt em{font-style:normal}
+  .lt b{display:flex;align-items:center;gap:8px;font-weight:500;font-size:14px}
+  .lt b s{text-decoration:none;width:14px;height:14px;flex:none;border:1px solid var(--line)}
+  .lt[data-t=accent] s{border-radius:50%;background:var(--ac);transition:background .5s}
+  .lt[data-t=radius] s{border:1.5px solid var(--ink);border-right:0;border-bottom:0;border-top-left-radius:var(--rc);transition:border-radius .5s}
+  .lt[data-t=space] s{border:0;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px var(--gp));opacity:.5}
+  .lt[data-t=type] s{border:0;font:600 13px/14px Onest;text-align:center}
+  .lt .anchor{position:absolute;right:-4px;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:var(--bg);border:1.5px solid var(--muted);transition:border-color .2s,background .2s}
+  .lt.on{color:var(--hl)}.lt.on span{color:var(--hl)}
+  .lt.on .anchor{border-color:var(--hl);background:var(--hl)}
+  .lc.has [data-t-of]{opacity:.4}
+  .lc.has [data-t-of].hit{opacity:1;outline-color:var(--hl)}
+  .lc-hint{font-size:13px;line-height:20px;color:var(--muted);margin-top:16px;min-height:20px}
+  @media (max-width:900px){
+    .lab-hero{grid-template-columns:1fr}.lab-hero .txt,.lab-hero .ill{grid-column:1}
+    .lc-plane{grid-template-columns:1fr 1fr;}
+    .lc-tokens{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;border-top:0}
+    .lt{flex:1 1 45%;padding-right:12px}
+    .lt .anchor{display:none}
+    .lc-lines{display:none}
+    .lc.iso .lc-plane{transform:none}
+  }
+  @media (prefers-reduced-motion:reduce){.lc *{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="lab-top t-cap"><a class="link" href="hero-a.html">← Прототип A</a><span>Прототип C · «Одна система — много продуктов»</span><a class="link" href="../index.html">Главная →</a></div>
+  <section class="lab-hero">
+    <div class="txt">
+      <h1 class="t-display">Проектирую продукты, системы и команды</h1>
+      <p class="t-lead muted"><b style="color:var(--ink);font-weight:500">Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: сам проектирую и помогаю команде расти.</p>
+    </div>
+
+    <div class="ill">
+      <div class="lc sys" id="lc" role="group" aria-label="Токены дизайн-системы и где они живут в веб и мобильном продукте">
+        <div class="lc-scene">
+          <div class="lc-plane" id="plane">
+            <div class="lc-tokens">
+              <button type="button" class="lt" data-t="accent"><span>color.accent</span><b><s></s><em>Графит</em></b><i class="anchor"></i></button>
+              <button type="button" class="lt" data-t="radius"><span>radius.control</span><b><s></s><em>12</em></b><i class="anchor"></i></button>
+              <button type="button" class="lt" data-t="space"><span>space.density</span><b><s></s><em>Средняя</em></b><i class="anchor"></i></button>
+              <button type="button" class="lt" data-t="type"><span>type.body</span><b><s>Aa</s><em>Onest 16</em></b><i class="anchor"></i></button>
+            </div>
+            <figure class="sf sf-web"><figcaption><span>Web</span><span class="sf-size">1440</span></figcaption>
+              <div class="sf-body"><div class="w-nav" data-t-of="accent space"><i></i><i></i><i></i><i></i></div>
+                <div class="w-main"><div class="w-head"><i class="ttl" data-t-of="type"></i><span class="c-btn" data-t-of="accent radius"></span></div><div class="c-input" data-t-of="radius"></div>
+                  <div class="w-cards"><div class="c-card" data-t-of="radius space"><i></i><i></i></div><div class="c-card" data-t-of="radius space"><i></i><i></i></div><div class="c-card" data-t-of="radius space"><i></i><i></i></div></div>
+                  <div class="c-row" data-t-of="space type"><i></i><b></b></div></div></div></figure>
+            <figure class="sf sf-mob"><figcaption><span>Mobile</span><span class="sf-size">390</span></figcaption>
+              <div class="sf-body"><i class="m-island"></i><div class="c-card" data-t-of="radius space"><i></i><i></i></div><div class="c-row" data-t-of="space type"><i></i><b></b></div><span class="c-btn" data-t-of="accent radius"></span><div class="m-tabs" data-t-of="accent"><i></i><i></i><i></i><i></i></div></div></figure>
+            <svg class="lc-lines" aria-hidden="true"></svg>
+          </div>
+        </div>
+        <p class="lc-hint" aria-live="polite">Наведите на токен — увидите, где он живёт в обоих продуктах. Клик меняет значение.</p>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  const lc = document.getElementById('lc'), plane = document.getElementById('plane'), svg = lc.querySelector('.lc-lines');
+  const hint = lc.querySelector('.lc-hint'), hintText = hint.textContent;
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  // координаты в плоскости схемы (до 3D-поворота), чтобы линии лежали в той же плоскости
+  const pos = el => { let x = 0, y = 0, n = el; while (n && n !== plane) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; } return { x, y, w: el.offsetWidth, h: el.offsetHeight }; };
+  const draw = t => {
+    svg.innerHTML = '';
+    lc.querySelectorAll('.lt').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+    lc.classList.toggle('has', !!t);
+    lc.querySelectorAll('[data-t-of]').forEach(el => el.classList.toggle('hit', !!t && el.dataset.tOf.split(' ').includes(t)));
+    if (!t) { hint.textContent = hintText; return; }
+    const a = pos(lc.querySelector(`.lt[data-t="${t}"] .anchor`));
+    const ax = a.x + a.w / 2, ay = a.y + a.h / 2;
+    const hits = [...lc.querySelectorAll(`[data-t-of~="${t}"]`)];
+    hits.forEach(el => {
+      const r = pos(el), tx = r.x, ty = r.y + r.h / 2, mx = (ax + tx) / 2;
+      const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      p.setAttribute('d', `M${ax},${ay} C${mx},${ay} ${mx},${ty} ${tx},${ty}`);
+      svg.appendChild(p);
+      const len = p.getTotalLength(); p.style.setProperty('--len', len);
+      const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('cx', tx); c.setAttribute('cy', ty); c.setAttribute('r', 2.5); svg.appendChild(c);
+      requestAnimationFrame(() => requestAnimationFrame(() => { p.classList.add('on'); c.classList.add('on'); }));
+    });
+    hint.textContent = `${t === 'accent' ? 'color.accent' : t === 'radius' ? 'radius.control' : t === 'space' ? 'space.density' : 'type.body'} · ${hits.length} мест в веб и мобайл`;
+  };
+  const sets = {
+    accent: [['Графит', { '--ac': 'var(--ink)' }], ['Шампань', { '--ac': '#C9B48A' }], ['Синий', { '--ac': '#3D6BFF' }]],
+    radius: [['12', { '--rc': '12px' }], ['20', { '--rc': '20px' }], ['4', { '--rc': '4px' }]],
+    space: [['Средняя', { '--gp': '10px' }], ['Свободная', { '--gp': '14px' }], ['Плотная', { '--gp': '6px' }]],
+    type: [['Onest 16', {}]],
+  };
+  const idx = { accent: 0, radius: 0, space: 0, type: 0 };
+  lc.querySelectorAll('.lt').forEach(b => {
+    const t = b.dataset.t;
+    if (fine) { b.addEventListener('mouseenter', () => draw(t)); b.addEventListener('mouseleave', () => draw(null)); }
+    b.addEventListener('focus', () => draw(t)); b.addEventListener('blur', () => draw(null));
+    b.addEventListener('click', () => {
+      const list = sets[t]; idx[t] = (idx[t] + 1) % list.length;
+      const [name, v] = list[idx[t]];
+      Object.entries(v).forEach(([p, val]) => lc.style.setProperty(p, val));
+      b.querySelector('em').textContent = name;
+      setTimeout(() => draw(t), 520); // после анимации размеров пересобрать линии
+    });
+  });
+  if (fine) { lc.querySelector('.lc-scene').addEventListener('pointerenter', () => lc.classList.add('iso')); lc.addEventListener('pointerleave', () => lc.classList.remove('iso')); }
+})();
+</script>
+</body>
+</html>

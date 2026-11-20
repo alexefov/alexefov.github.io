@@ -1,0 +1,26 @@
+/* =========================================================
+   Саша — персонаж (assets/sasha.js). Стиль outlined cartoon.
+   ========================================================= */
+/* Цвета рисунка зашиты в sasha.js (палитра outlined cartoon) и от темы не зависят.
+   Тема меняет только обводку-наклейку вокруг фигуры: в светлой она цвета фона
+   (отделяет Сашу от линий страницы), в тёмной — светлая, чтобы чернильный
+   контур не тонул в фоне. */
+.sa{display:block;width:100%;height:100%;overflow:hidden;pointer-events:none;--sa-key:var(--bg)}
+.sa .sa-kl{flood-color:var(--sa-key)}
+.sa .sa-hit{fill:transparent;pointer-events:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .sa{--sa-key:#EDEAE3}}
+:root[data-theme=dark] .sa{--sa-key:#EDEAE3}
+
+/* выглядывает из-за тулбара */
+.sasha-peek{position:fixed;left:0;top:0;width:220px;height:190px;z-index:49;pointer-events:none}
+.sa-say{position:fixed;left:0;top:0;z-index:51;pointer-events:none;white-space:nowrap;
+  background:var(--bg);color:var(--ink);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);font:500 16px/26px "Onest",system-ui,sans-serif;padding:4px 13px;
+  border-radius:18px 18px 18px 4px;transform-origin:0 100%;
+  opacity:0;transform:translateY(-100%) scale(.6);transition:opacity .2s,transform .45s cubic-bezier(.34,1.56,.64,1)}
+.sa-say.on{opacity:1;transform:translateY(-100%) scale(1)}
+
+/* сидит на линии подвала */
+footer{position:relative}
+.sasha-desk{position:absolute;left:0;right:0;top:-200px;height:210px;z-index:2;pointer-events:none}
+.sasha-desk .sa-hit{pointer-events:all;cursor:default}
+@media (prefers-reduced-motion:reduce){.sa-say{transition:none}}

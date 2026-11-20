@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Первый экран — варианты B</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  main{overflow-x:clip}
+  body{transition:background .5s var(--ease),color .5s var(--ease)}
+  .lab-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:16px;color:var(--muted)}
+  .sw{display:flex;flex-wrap:wrap;gap:4px}
+  .sw button{font:inherit;color:var(--muted);background:none;border:1px solid var(--line);border-radius:8px;padding:2px 10px;cursor:pointer}
+  .sw button.on{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+
+  .hx{min-height:calc(100svh - 40px);display:flex;flex-direction:column;padding:var(--s4) 0}
+  .hx-top{display:flex;align-items:baseline;gap:24px}
+  .hx-top .name{font-weight:500}
+  .hx-top .st{flex:1;font-size:13px;line-height:20px;color:var(--muted)}
+  .hx-top .lk{display:flex;gap:24px}
+  .hx-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:var(--s5) 0}
+  .hx-foot{display:flex;flex-wrap:wrap;gap:8px 24px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;line-height:20px}
+  .hx-foot .muted{color:var(--muted)}
+
+  .v{display:none}
+  body[data-v="1"] .v1,body[data-v="2"] .v2,body[data-v="3"] .v3,body[data-v="4"] .v4,body[data-v="5"] .v5{display:block}
+
+  /* общее: строки подгоняются под ширину по одной */
+  .fit{font-weight:600;line-height:.9;letter-spacing:-.055em;white-space:nowrap}
+  .ln{display:block;width:max-content;overflow:hidden;padding-bottom:.05em}
+  .ln>span{display:block;transform:translateY(105%);animation:mask-in .9s var(--ease) forwards}
+  .ln:nth-child(2)>span{animation-delay:.07s}.ln:nth-child(3)>span{animation-delay:.14s}
+  .wd{font:inherit;letter-spacing:inherit;line-height:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;transition:color .35s var(--ease),-webkit-text-stroke-color .35s}
+  .wd:focus-visible{outline:2px solid var(--sel);outline-offset:4px;border-radius:4px}
+  .rest{transition:color .35s var(--ease)}
+  .row{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;margin-top:var(--s5);align-items:start}
+  .lead{grid-column:1/6;color:var(--muted);max-width:44ch}
+  .lead b{color:var(--ink);font-weight:500}
+  .ctx{grid-column:8/13;display:grid}
+  .ctx>div{grid-area:1/1;opacity:0;transform:translateY(6px);transition:opacity .3s var(--ease),transform .4s var(--ease)}
+  .ctx>div.on{opacity:1;transform:none}
+  .ctx b{font-weight:500}.ctx span{color:var(--muted)}
+  .fade{opacity:0;animation:fade .8s .5s var(--ease) forwards}
+
+  /* 1 · Обложка: две строки, остальное гаснет в серый */
+  .v1 .wd{text-decoration:underline;text-decoration-thickness:.035em;text-underline-offset:.1em;text-decoration-color:color-mix(in srgb,var(--ink) 20%,transparent)}
+  .v1 .has .rest,.v1 .has .wd:not(.on){color:color-mix(in srgb,var(--ink) 16%,transparent);text-decoration-color:transparent}
+  .v1 .has .wd.on{text-decoration-color:var(--ink)}
+
+  /* 2 · Три строки: «системы» становится самым крупным словом экрана */
+  .v2 .ln:nth-child(1) .rest{color:var(--muted)}
+  .v2 .has .rest,.v2 .has .wd:not(.on){color:color-mix(in srgb,var(--ink) 14%,transparent)}
+
+  /* 3 · Контур: ключевые слова — контуром, по наведению заливаются */
+  .v3 .wd{color:transparent;-webkit-text-stroke:.018em var(--ink)}
+  .v3 .wd.on{color:var(--ink)}
+  .v3 .has .rest{color:color-mix(in srgb,var(--ink) 30%,transparent)}
+
+  /* 4 · Сноски: слова с номерами, внизу три сноски-расшифровки */
+  .v4 sup{font-size:.2em;font-weight:500;letter-spacing:0;vertical-align:top;position:relative;top:.35em;margin-left:.08em;color:var(--muted);transition:color .3s}
+  .v4 .wd.on sup{color:var(--sel)}
+  .v4 .has .rest,.v4 .has .wd:not(.on){color:color-mix(in srgb,var(--ink) 16%,transparent)}
+  .notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:var(--s5);padding-top:var(--s3);border-top:1px solid var(--line)}
+  .note{display:grid;grid-template-columns:24px 1fr;font-size:16px;line-height:26px;cursor:default;transition:opacity .3s var(--ease)}
+  .note i{font-style:normal;font-size:13px;line-height:26px;color:var(--muted)}
+  .note b{font-weight:500}.note span{display:block;color:var(--muted)}
+  .notes.has .note:not(.on){opacity:.3}
+  .note.on i{color:var(--sel)}
+  .v4 .lead{margin-top:var(--s4)}
+
+  /* 5 · Тёмная обложка: сцена Comfort, акцент шампань на выбранном слове */
+  body[data-v="5"]{--bg:#15130F;--ink:#EDECE8;--muted:#8F8B83;--line:#2C2924;background:#15130F;color:#EDECE8}
+  .v5 .has .rest,.v5 .has .wd:not(.on){color:rgba(237,236,232,.16)}
+  .v5 .wd.on{color:#C9B48A}
+
+  @media (max-width:900px){
+    .hx-top .st{display:none}.hx-top{justify-content:space-between}
+    .lead,.ctx{grid-column:1/13}
+    .notes{grid-template-columns:1fr;gap:12px}
+  }
+  @media (prefers-reduced-motion:reduce){.ln>span,.fade{animation:none;transform:none;opacity:1}}
+</style>
+</head>
+<body data-v="1">
+<main class="wrap">
+  <div class="lab-top t-cap"><a class="link" href="hero-type.html#b">← Варианты A–C</a>
+    <div class="sw" aria-label="Вариант"><button data-v="1">B1 · Обложка</button><button data-v="2">B2 · Три строки</button><button data-v="3">B3 · Контур</button><button data-v="4">B4 · Сноски</button><button data-v="5">B5 · Тёмная</button></div>
+  </div>
+  <section class="hx">
+    <div class="hx-top">
+      <span class="name">Александр Ефремов</span>
+      <span class="st">Открыт к ролям Senior и Lead · Москва, гибрид или удалённо</span>
+      <span class="lk"><a class="link" href="../cv.html">CV</a><a class="link" href="../index.html#contact">Написать</a></span>
+    </div>
+
+    <div class="hx-body">
+      <!-- B1 -->
+      <div class="v v1">
+        <h1 class="fit ttl" aria-label="Проектирую продукты, системы и команды">
+          <span class="ln"><span><span class="rest">Проектирую </span><button class="wd" data-k="products">продукты</button><span class="rest">,</span></span></span>
+          <span class="ln"><span><button class="wd" data-k="systems">системы</button><span class="rest"> и </span><button class="wd" data-k="teams">команды</button></span></span>
+        </h1>
+        <div class="row fade"><p class="lead"><b>Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: проектирую сам и помогаю команде расти.</p><div class="ctx" aria-live="polite"></div></div>
+      </div>
+
+      <!-- B2 -->
+      <div class="v v2">
+        <h1 class="fit ttl" aria-label="Проектирую продукты, системы и команды" data-max=".2">
+          <span class="ln"><span><span class="rest">Проектирую </span><button class="wd" data-k="products">продукты</button><span class="rest">,</span></span></span>
+          <span class="ln"><span><button class="wd" data-k="systems">системы</button></span></span>
+          <span class="ln"><span><span class="rest">и </span><button class="wd" data-k="teams">команды</button></span></span>
+        </h1>
+        <div class="row fade"><p class="lead"><b>Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: проектирую сам и помогаю команде расти.</p><div class="ctx" aria-live="polite"></div></div>
+      </div>
+
+      <!-- B3 -->
+      <div class="v v3">
+        <h1 class="fit ttl" aria-label="Проектирую продукты, системы и команды">
+          <span class="ln"><span><span class="rest">Проектирую </span><button class="wd" data-k="products">продукты</button><span class="rest">,</span></span></span>
+          <span class="ln"><span><button class="wd" data-k="systems">системы</button><span class="rest"> и </span><button class="wd" data-k="teams">команды</button></span></span>
+        </h1>
+        <div class="row fade"><p class="lead"><b>Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: проектирую сам и помогаю команде расти.</p><div class="ctx" aria-live="polite"></div></div>
+      </div>
+
+      <!-- B4 -->
+      <div class="v v4">
+        <h1 class="fit ttl" aria-label="Проектирую продукты, системы и команды">
+          <span class="ln"><span><span class="rest">Проектирую </span><button class="wd" data-k="products">продукты<sup>1</sup></button><span class="rest">,</span></span></span>
+          <span class="ln"><span><button class="wd" data-k="systems">системы<sup>2</sup></button><span class="rest"> и </span><button class="wd" data-k="teams">команды<sup>3</sup></button></span></span>
+        </h1>
+        <div class="notes fade">
+          <div class="note" data-k="products"><i>1</i><p><b>Sminex Comfort, Портал строителя, Unity Finance</b><span>Мобильные приложения, веб-порталы, торговая платформа</span></p></div>
+          <div class="note" data-k="systems"><i>2</i><p><b>Sminex Design System</b><span>Брендбук → токены → 6 UI-китов, светлая и тёмная темы</span></p></div>
+          <div class="note" data-k="teams"><i>3</i><p><b>UX/UI-направление с нуля</b><span>10 дизайнеров, найм, менторство, ревью, DoR / DoD</span></p></div>
+        </div>
+        <p class="lead fade"><b>Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: проектирую сам и помогаю команде расти.</p>
+      </div>
+
+      <!-- B5 -->
+      <div class="v v5">
+        <h1 class="fit ttl" aria-label="Проектирую продукты, системы и команды">
+          <span class="ln"><span><span class="rest">Проектирую </span><button class="wd" data-k="products">продукты</button><span class="rest">,</span></span></span>
+          <span class="ln"><span><button class="wd" data-k="systems">системы</button><span class="rest"> и </span><button class="wd" data-k="teams">команды</button></span></span>
+        </h1>
+        <div class="row fade"><p class="lead"><b>Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: проектирую сам и помогаю команде расти.</p><div class="ctx" aria-live="polite"></div></div>
+      </div>
+    </div>
+
+    <div class="hx-foot fade"><span class="muted">Опыт в</span><span>Sminex</span><span>Нотамедиа</span><span>Unity Trade Solutions</span><span>Synergy Digital</span><span>Regym</span><span>DP Soft</span></div>
+  </section>
+</main>
+<script>
+(() => {
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const info = {
+    products: ['Sminex Comfort, Портал строителя, Unity Finance', 'Мобильные приложения, веб-порталы, торговая платформа'],
+    systems: ['Sminex Design System', 'Брендбук → токены → 6 UI-китов, светлая и тёмная темы'],
+    teams: ['UX/UI-направление с нуля', '10 дизайнеров, найм, менторство, ревью, DoR / DoD'],
+  };
+  document.querySelectorAll('.ctx').forEach(c => {
+    c.innerHTML = Object.entries(info).map(([k, [b, s]]) => `<div data-k="${k}"><b>${b}</b><br><span>${s}</span></div>`).join('');
+  });
+
+  document.querySelectorAll('.ttl').forEach(ttl => {
+    const scope = ttl.closest('.v'), notes = scope.querySelector('.notes');
+    const set = k => {
+      ttl.classList.toggle('has', !!k);
+      ttl.querySelectorAll('.wd').forEach(el => el.classList.toggle('on', el.dataset.k === k));
+      scope.querySelectorAll('.ctx>div, .note').forEach(el => el.classList.toggle('on', el.dataset.k === k));
+      if (notes) notes.classList.toggle('has', !!k);
+    };
+    const bind = (el, k) => {
+      if (fine) { el.addEventListener('mouseenter', () => set(k)); el.addEventListener('mouseleave', () => set(null)); }
+      el.addEventListener('click', () => { if (!fine) set(el.classList.contains('on') ? null : k); });
+    };
+    ttl.querySelectorAll('.wd').forEach(w => {
+      bind(w, w.dataset.k);
+      w.addEventListener('focus', () => set(w.dataset.k)); w.addEventListener('blur', () => set(null));
+    });
+    scope.querySelectorAll('.note').forEach(n => bind(n, n.dataset.k));
+  });
+
+  // каждая строка — ровно во всю ширину (с потолком по высоте экрана)
+  const fit = () => {
+    document.querySelectorAll('.fit').forEach(h => {
+      if (!h.offsetParent) return;
+      const w = h.parentElement.clientWidth, cap = innerHeight * (parseFloat(h.dataset.max) || .22);
+      h.querySelectorAll('.ln').forEach(l => { l.style.fontSize = '100px'; l.style.fontSize = Math.min(100 * w / l.scrollWidth, cap) + 'px'; });
+    });
+  };
+  const pick = v => {
+    document.body.dataset.v = v;
+    document.querySelectorAll('.sw button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+    try { history.replaceState(null, '', '#' + v); } catch (e) {}
+    fit();
+  };
+  document.querySelectorAll('.sw button').forEach(b => b.addEventListener('click', () => pick(b.dataset.v)));
+  pick(['1', '2', '3', '4', '5'].includes(location.hash.slice(1)) ? location.hash.slice(1) : '1');
+  addEventListener('resize', fit);
+  document.fonts && document.fonts.ready.then(fit);
+})();
+</script>
+</body>
+</html>

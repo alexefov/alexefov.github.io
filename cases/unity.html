@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unity Trade Solutions — кейс · Александр Ефремов</title>
+<meta name="description" content="Кейс: дизайн веб-терминала и мобильного приложения Unity Trader — мультиассетной торговой платформы с white-label для брокеров и банков.">
+<meta property="og:title" content="Unity Trade Solutions — кейс Александра Ефремова">
+<meta property="og:description" content="Веб-терминал и Unity Trader: торговые интерфейсы для профессионалов, которые брокеры выпускают под своим брендом.">
+<!-- Черновик: не индексировать, пока поля .fill не заполнены -->
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/case.css">
+<script>try{const t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body class="case-unity">
+<main>
+  <!-- 00 · Обзор -->
+  <section class="c-head wrap" id="overview" data-nav="overview">
+    <span class="t-cap rv">Кейс · Финтех · Web, iOS, Android</span>
+    <h1 class="t-h1 rv" style="margin-top:var(--s2)">Unity Trade Solutions: торговый терминал, который брокер выпускает под своим брендом</h1>
+    <p class="t-lead muted rv">Unity — мультиассетная торговая платформа для брокеров, банков и фондов. Я участвовал в дизайне двух клиентских продуктов: веб-терминала для торговли из браузера и мобильного приложения Unity Trader для профессиональных трейдеров.</p>
+    <div class="facts-row rv">
+      <div><span class="t-cap">Роль</span><b class="fill">UX/UI-дизайнер продукта</b></div>
+      <div><span class="t-cap">Период</span><b>2020—2021</b></div>
+      <div><span class="t-cap">Платформы</span><b>Web, iOS, Android</b></div>
+      <div><span class="t-cap">Компания</span><b><a href="https://unity.finance/ru" target="_blank" rel="noopener">Unity Trade Solutions</a>, Великобритания и ОАЭ</b></div>
+    </div>
+    <div class="draft t-cap rv"><b>Черновик кейса.</b><span>Тексты и экраны взяты с публичного сайта unity.finance; поля с пунктиром ждут фактов о моей работе.</span></div>
+    <div class="c-cover rv"><div class="stage" data-sel><img class="desk" src="../assets/img/unity/terminal.png" alt="Веб-терминал Unity: вотчлист, тикет ордера, стакан, графики, позиции, новости и маржа на одном экране" width="1220" height="712"></div></div>
+  </section>
+
+  <!-- 01 · Контекст и задача -->
+  <section class="section wrap" id="task" data-nav="task">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">Контекст и задача</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Продукт с двумя заказчиками: брокер и его трейдер</h2>
+      </div>
+      <div class="r">
+        <p class="t-lead muted rv">Unity не торгует с людьми напрямую. Платформу покупают брокеры, банки, инвестфонды и проп-трейдинговые компании и выпускают её клиентам под своим брендом — в том числе в сторах со своей учётной записи.</p>
+        <p class="t-lead muted rv">Поэтому каждый экран решает две задачи: трейдеру нужна скорость и плотность информации, бизнесу — интерфейс, который можно перекрасить, перевести и настроить под свой набор инструментов.</p>
+        <div class="rows rv" style="margin-top:var(--s5)">
+          <div><b>Пользователи</b><span>Опытные трейдеры клиентов Unity: брокеров, банков, фондов</span></div>
+          <div><b>Рынки</b><span>Форекс, акции, облигации, фьючерсы, опционы, CFD, ETF, криптовалюта</span></div>
+          <div><b>White-label</b><span>Своя тема, свой язык, своя публикация в App Store и Google Play</span></div>
+          <div><b>Моя часть</b><span>Веб-терминал и Unity Trader. <span class="fill">Что именно делал в каждом</span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · Роль -->
+  <section class="section wrap" id="role" data-nav="role">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">Моя роль</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Два продукта одной платформы</h2>
+      </div>
+      <div class="r">
+        <div class="rows rv">
+          <div><b>Веб-терминал</b><span class="fill">какие разделы и виджеты проектировал</span></div>
+          <div><b>Unity Trader</b><span class="fill">какие сценарии мобильного приложения вёл</span></div>
+          <div><b>Компоненты</b><span class="fill">общие элементы веба и мобайла: тикет, котировка, бейджи классов активов</span></div>
+          <div><b>Команда</b><span class="fill">сколько дизайнеров, с кем работал: продакт, аналитики, разработка</span></div>
+          <div><b>Исследования</b><span class="fill">как проверяли решения с трейдерами</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · Решения -->
+  <section class="wrap" id="decisions" data-nav="decisions">
+    <div class="dec">
+      <div class="txt">
+        <span class="t-cap rv">Решение 01 · Веб-терминал</span>
+        <h2 class="t-h2 rv">Рабочее место из виджетов</h2>
+        <p class="muted rv">Трейдеры работают по-разному: одному нужен стакан и тикет, другому — пять графиков. Поэтому терминал собирается из виджетов — вотчлисты, тикет, стакан, графики TradingView, новости, маржа — и сохраняется в виде вкладок-раскладок. Виджеты можно закрепить, а торговлю — заблокировать от случайного клика.</p>
+        <div class="result rv"><b>100+</b><span class="muted">инструментов технического анализа в графиках</span></div>
+      </div>
+      <div class="stage rv" data-sel><img class="desk" src="../assets/img/unity/terminal-watchlist.png" alt="Вотчлист веб-терминала: карточки инструментов с ценами покупки и продажи" width="436" height="446" loading="lazy"></div>
+    </div>
+    <div class="dec">
+      <div class="txt">
+        <span class="t-cap rv">Решение 02 · Веб-терминал</span>
+        <h2 class="t-h2 rv">Тикет и стакан рядом</h2>
+        <p class="muted rv">Решение о сделке принимается за секунды. Цены продажи и покупки со спредом между ними стоят крупно сверху, тип ордера — один переключатель «Маркет / Лимит / Стоп», стоп-лосс и тейк-профит раскрываются по запросу. Справа — стакан того же инструмента: видно, по какой цене есть объём.</p>
+        <div class="result rv"><b class="fill">—</b><span class="muted">результат: скорость выставления ордера, число ошибок</span></div>
+      </div>
+      <div class="stage rv" data-sel><img class="desk" src="../assets/img/unity/terminal-order.png" alt="Тикет ордера и стакан цен по MSFT" width="456" height="446" loading="lazy"></div>
+    </div>
+    <div class="dec">
+      <div class="txt">
+        <span class="t-cap rv">Решение 03 · Unity Trader</span>
+        <h2 class="t-h2 rv">Терминал в кармане без упрощений</h2>
+        <p class="muted rv">Unity Trader — не облегчённая витрина, а рабочий инструмент: все типы ордеров, контроль позиций и сделок. Котировки в списке читаются с одного взгляда — крупные «большие цифры» цены и спред между ними, — а на экране инструмента открытая позиция видна прямо над формой нового ордера.</p>
+        <div class="result rv"><b>iOS + Android</b><span class="muted">приложение публикуется в сторах под брендом клиента</span></div>
+      </div>
+      <div class="stage ph rv" data-sel><img src="../assets/img/unity/trader-quotes.png" alt="Unity Trader: список котировок" width="391" height="569" loading="lazy"></div>
+    </div>
+  </section>
+
+  <!-- 04 · Экраны -->
+  <section class="section wrap" id="screens" data-nav="screens">
+    <div class="sec-head"><h2 class="t-h2 rv">Экраны</h2><p class="muted rv">Веб-терминал и Unity Trader в тёмной теме.</p></div>
+    <div class="screens u-web">
+      <figure class="rv"><div class="stage"><img src="../assets/img/unity/terminal-chart.png" alt="График инструмента с панелью рисования" width="500" height="444" loading="lazy"></div><figcaption class="t-cap">Веб · Графики</figcaption></figure>
+      <figure class="rv"><div class="stage"><img src="../assets/img/unity/terminal-order.png" alt="Тикет ордера и стакан" width="456" height="446" loading="lazy"></div><figcaption class="t-cap">Веб · Ордер и стакан</figcaption></figure>
+    </div>
+    <div class="screens u-mob">
+      <figure class="rv"><div class="stage ph"><img src="../assets/img/unity/trader-quotes.png" alt="Список котировок" width="391" height="569" loading="lazy"></div><figcaption class="t-cap">Trader · Котировки</figcaption></figure>
+      <figure class="rv"><div class="stage ph"><img src="../assets/img/unity/trader-ticket.png" alt="Экран инструмента EURUSD с позицией и ордером" width="294" height="398" loading="lazy"></div><figcaption class="t-cap">Trader · Инструмент</figcaption></figure>
+      <figure class="rv"><div class="stage ph"><img src="../assets/img/unity/trader-positions.png" alt="Позиции по классам активов" width="232" height="318" loading="lazy"></div><figcaption class="t-cap">Trader · Позиции</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 05 · Итоги -->
+  <section class="section wrap" id="results" data-nav="results">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">Масштаб платформы</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Один интерфейс на десятки рынков и брендов</h2>
+      </div>
+      <div class="r">
+        <p class="t-lead muted rv">Чем сложнее данные, тем строже должна быть система: одна карточка котировки и один тикет работают для акции, валютной пары и фьючерса — у любого брокера и на любом языке.</p>
+      </div>
+    </div>
+    <div class="score rv">
+      <div class="hl"><span class="n">100K+</span><p class="l">финансовых инструментов</p></div>
+      <div><span class="n">30+</span><p class="l">источников цен</p></div>
+      <div><span class="n">10+</span><p class="l">юрисдикций</p></div>
+    </div>
+    <p class="t-cap muted source rv">Источник: <a href="https://unity.finance/ru" target="_blank" rel="noopener">unity.finance</a>. Мой вклад в результат: <span class="fill">цифры по терминалу и приложению</span>.</p>
+  </section>
+
+  <section class="c-end wrap" id="next" data-nav="next">
+    <h2 class="t-display rv">Обсудим вашу задачу?</h2>
+    <div class="links t-lead rv">
+      <a class="link" href="../index.html#contact">Написать</a>
+      <a class="link" href="sminex-comfort.html">Кейс Sminex Comfort</a>
+      <a class="link" href="../index.html#work">Все работы</a>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap t-cap"><span>© 2026 Александр Ефремов · Москва</span><button class="theme-btn" data-theme-toggle>Тема: авто</button></div></footer>
+
+<nav class="toolbar" aria-label="Навигация по кейсу">
+  <a class="mono-mark" href="../index.html#work" aria-label="Все работы">←</a>
+  <span class="sep"></span>
+  <a href="#overview" data-to="overview">Обзор</a>
+  <a href="#task" data-to="task" class="opt">Задача</a>
+  <a href="#role" data-to="role" class="opt">Роль</a>
+  <a href="#decisions" data-to="decisions">Решения</a>
+  <a href="#screens" data-to="screens" class="opt">Экраны</a>
+  <a href="#results" data-to="results">Итоги</a>
+</nav>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>

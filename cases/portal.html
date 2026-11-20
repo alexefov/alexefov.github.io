@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Портал строителя — кейс · Александр Ефремов</title>
+<meta name="description" content="Кейс: дизайн веб-портала Sminex для подрядчиков — «Портал строителя».">
+<meta property="og:title" content="Портал строителя — кейс Александра Ефремова">
+<meta property="og:description" content="Веб-портал Sminex для подрядчиков: как проектировался enterprise-продукт для стройки.">
+<!-- Черновик: не индексировать, пока поля .fill не заполнены; с главной ссылка уже есть -->
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/case.css">
+<script>try{const t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body class="case-portal">
+<main>
+  <!-- 01 · Обзор -->
+  <section class="c-head wrap" id="overview" data-nav="overview">
+    <span class="t-cap rv">Кейс · Web · Enterprise</span>
+    <h1 class="t-h1 rv" style="margin-top:var(--s2)">Портал строителя</h1>
+    <p class="t-lead muted rv">Веб-портал Sminex, через который подрядчики работают с девелопером. Я разработал концепцию продукта, а дальше вёл его дизайн как арт-директор — вместе с командой из одного-двух дизайнеров.</p>
+    <div class="facts-row rv">
+      <div><span class="t-cap">Роль</span><b>Lead UX/UI</b></div>
+      <div><span class="t-cap">Период</span><b>2025—2026</b></div>
+      <div><span class="t-cap">Платформа</span><b>Web, desktop</b></div>
+      <div><span class="t-cap">Компания</span><b>Sminex, девелопер премиальной недвижимости</b></div>
+    </div>
+    <div class="draft t-cap rv"><b>Черновик кейса.</b><span>Экраны — заглушки, поля с пунктиром ждут фактов. Страница скрыта от поиска.</span></div>
+    <div class="c-cover rv"><div class="stage" data-sel><img class="desk" src="../assets/img/portal/portal-overview.png" alt="Портал строителя — главная (заглушка)" width="1600" height="1000"></div></div>
+  </section>
+
+  <!-- 02 · Контекст и задача -->
+  <section class="section wrap" id="task" data-nav="task">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">Контекст и задача</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Стройка премиального дома — это десятки подрядчиков</h2>
+      </div>
+      <div class="r">
+        <p class="t-lead muted rv">Sminex строит премиальные жилые и офисные дома в Москве и последовательно цифровизирует стройку. Подрядчикам нужно одно рабочее место для взаимодействия с девелопером.</p>
+        <p class="t-lead muted rv">До портала: <span class="fill">как подрядчики работали со Sminex — почта, Excel, бумага, другая система</span>. Главная боль: <span class="fill">что мешало сильнее всего</span>.</p>
+        <div class="rows rv" style="margin-top:var(--s5)">
+          <div><b>Пользователи</b><span>Подрядчики и их сотрудники; со стороны Sminex — согласующие из сметного отдела, строительного контроля, безопасности и других служб</span></div>
+          <div><b>Масштаб</b><span>606 пользователей и 221 компания-подрядчик на конец 2-го квартала 2026</span></div>
+          <div><b>Цель бизнеса</b><span class="fill">ускорить согласования, сократить бумагу, контролировать сроки</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · Роль -->
+  <section class="section wrap" id="role" data-nav="role">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">Моя роль</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Концепция и арт-дирекшн</h2>
+      </div>
+      <div class="r">
+        <div class="rows rv">
+          <div><b>Концепция</b><span>Сценарии подрядчика, структура портала и визуальный язык продукта</span></div>
+          <div><b>Арт-дирекшн</b><span>Вёл дизайн новых разделов и доработок, ставил задачи дизайнерам и принимал макеты</span></div>
+          <div><b>Дизайн-система</b><span>Перевёл портал на корпоративный Sminex UI Kit — компоненты описаны в Storybook</span></div>
+          <div><b>Дизайн-ревью</b><span>Сверял вёрстку с макетами и добивался, чтобы продукт выглядел так, как задуман</span></div>
+          <div><b>Команда</b><span>Один-два дизайнера в разные периоды; продукт развивали вместе с аналитиками, разработкой и тестированием</span></div>
+          <div><b>Исследования</b><span class="fill">интервью или тесты с подрядчиками</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · Решения -->
+  <section class="wrap" id="decisions" data-nav="decisions">
+    <div class="dec">
+      <div class="txt">
+        <span class="t-cap rv">Решение 01</span>
+        <h2 class="t-h2 rv">Доступ на стройку — без переписки</h2>
+        <p class="muted rv">Чтобы сотрудник подрядчика попал на площадку, нужна заявка на доступ. Раньше замечания к ней уходили в почту, а исправленную заявку подавали заново. Вместе с командой мы перенесли согласование внутрь документа: в нём есть история согласования, а поля, которые нужно исправить, подсвечены. Ошибки ловят валидации ещё при заполнении, доступ можно оформить сразу на нескольких сотрудников, а причина отказа видна в карточке.</p>
+        <div class="result rv"><b>×13</b><span class="muted">рост числа заявок за квартал: 250 → 3 346</span></div>
+      </div>
+      <div class="stage rv" data-sel><img class="desk" src="../assets/img/portal/portal-documents.png" alt="Доступ на стройку (заглушка)" width="1600" height="1000" loading="lazy"></div>
+    </div>
+    <div class="dec">
+      <div class="txt">
+        <span class="t-cap rv">Решение 02</span>
+        <h2 class="t-h2 rv">Отклонённый акт можно перезапустить</h2>
+        <p class="muted rv">Почти каждый второй акт выполненных работ уходил на доработку. Подрядчик не всегда понимал причину, а отклонённый документ приходилось создавать заново. Теперь причина отклонения приходит из учётной системы и видна прямо на портале. Акт можно вернуть в черновик и снова отправить на согласование, а история при этом сохраняется.</p>
+        <div class="result rv"><b>в 2 раза</b><span class="muted">реже отклоняют акты, поданные через портал: 1,2 против 1,8 на акт</span></div>
+      </div>
+      <div class="stage rv" data-sel><img class="desk" src="../assets/img/portal/portal-issues.png" alt="Акт выполненных работ (заглушка)" width="1600" height="1000" loading="lazy"></div>
+    </div>
+    <div class="dec">
+      <div class="txt">
+        <span class="t-cap rv">Решение 03</span>
+        <h2 class="t-h2 rv">Обращения вместо поручений</h2>
+        <p class="muted rv">По запросу бизнеса «Поручения» стали «Обращениями» — этим словом в компании называют такие запросы. Заодно мы разобрали путаницу: в одном поле комментария смешивались внутренние пометки Sminex и вопросы к подрядчику. Вопрос подрядчику отделили от внутренней пометки, и у каждого появились свои статусы: теперь видно, на что подрядчик ответил, а что зависло.</p>
+        <div class="result rv"><b>2 потока</b><span class="muted">внутренние пометки и вопросы подрядчику больше не путаются</span></div>
+      </div>
+      <div class="stage rv" data-sel><img class="desk" src="../assets/img/portal/portal-schedule.png" alt="Обращения (заглушка)" width="1600" height="1000" loading="lazy"></div>
+    </div>
+  </section>
+
+  <!-- 05 · Экраны -->
+  <section class="section wrap" id="screens" data-nav="screens">
+    <div class="sec-head"><h2 class="t-h2 rv">Экраны</h2><p class="muted rv">Ключевые разделы портала.</p></div>
+    <div class="screens">
+      <figure class="rv"><div class="stage"><img src="../assets/img/portal/portal-overview.png" alt="Главная (заглушка)" width="1600" height="1000" loading="lazy"></div><figcaption class="t-cap">Главная</figcaption></figure>
+      <figure class="rv"><div class="stage"><img src="../assets/img/portal/portal-documents.png" alt="Документы и операции (заглушка)" width="1600" height="1000" loading="lazy"></div><figcaption class="t-cap">Документы и операции</figcaption></figure>
+      <figure class="rv"><div class="stage"><img src="../assets/img/portal/portal-issues.png" alt="Выполнения (заглушка)" width="1600" height="1000" loading="lazy"></div><figcaption class="t-cap">Выполнения</figcaption></figure>
+      <figure class="rv"><div class="stage"><img src="../assets/img/portal/portal-schedule.png" alt="Доступы (заглушка)" width="1600" height="1000" loading="lazy"></div><figcaption class="t-cap">Доступы</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 06 · Итоги -->
+  <section class="section wrap" id="results" data-nav="results">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">Итоги и выводы</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Портал растёт вместе со стройкой</h2>
+      </div>
+      <div class="r">
+        <div class="rows rv">
+          <div><b>Пользователи</b><span>606 — почти вдвое больше за 2-й квартал 2026 (было 313)</span></div>
+          <div><b>Подрядчики</b><span>221 компания (было 115)</span></div>
+          <div><b>Заявки на доступ</b><span>3 346 за квартал — в 13 раз больше</span></div>
+          <div><b>Акты выполненных работ</b><span>на портале их отклоняют вдвое реже, а повторно — примерно в 15% случаев против 38%</span></div>
+        </div>
+        <p class="t-lead muted rv" style="margin-top:var(--s5)">Чем дизайн для стройки отличается от B2C: <span class="fill">ваш вывод — например, в сравнении с Sminex Comfort</span>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="c-end wrap" id="next" data-nav="next">
+    <h2 class="t-display rv">Обсудим вашу задачу?</h2>
+    <div class="links t-lead rv">
+      <a class="link" href="../index.html#contact">Написать</a>
+      <a class="link" href="sminex-comfort.html">Кейс Sminex Comfort</a>
+      <a class="link" href="../index.html#work">Все работы</a>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap t-cap"><span>© 2026 Александр Ефремов · Москва</span><button class="theme-btn" data-theme-toggle>Тема: авто</button></div></footer>
+
+<nav class="toolbar" aria-label="Навигация по кейсу">
+  <a class="mono-mark" href="../index.html#work" aria-label="Все работы">←</a>
+  <span class="sep"></span>
+  <a href="#overview" data-to="overview">Обзор</a>
+  <a href="#task" data-to="task" class="opt">Задача</a>
+  <a href="#role" data-to="role" class="opt">Роль</a>
+  <a href="#decisions" data-to="decisions">Решения</a>
+  <a href="#screens" data-to="screens" class="opt">Экраны</a>
+  <a href="#results" data-to="results">Итоги</a>
+</nav>
+
+<script src="../assets/main.js"></script>
+</body>
+</html>

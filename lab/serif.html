@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Засечки для заголовков</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Lora:wght@400&family=Literata:opsz,wght@7..72,400&family=PT+Serif:wght@400&family=Spectral:wght@400&family=Source+Serif+4:opsz,wght@8..60,400&family=Playfair+Display:wght@400&family=Cormorant+Garamond:wght@400;500&family=Prata&family=Noto+Serif+Display:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="garden.css">
+<script>try{const t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+  .intro{padding:clamp(56px,9vh,96px) 0 32px}
+  .intro .dd{margin-bottom:16px}
+  .intro h1{font-size:clamp(36px,4.4vw,56px);line-height:1.1}
+  .intro p{margin-top:16px;color:var(--muted);max-width:56ch;font-size:18px;line-height:1.55}
+  .try{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:28px}
+  .try input{flex:1 1 320px;height:48px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+  .try input:focus{outline:2px solid var(--ac);outline-offset:1px}
+  .try label{font-size:14px;color:var(--muted)}
+
+  .fonts{display:flex;flex-direction:column;gap:16px;padding-bottom:40px}
+  .fc{display:grid;grid-template-columns:220px 1fr;gap:32px;padding:32px;border-radius:32px;background:var(--card)}
+  .fc.cur{background:transparent;border:1.5px dashed var(--line)}
+  .fc .meta b{display:block;font-weight:600;font-size:17px}
+  .fc .meta p{margin-top:8px;color:var(--muted);font-size:14px;line-height:1.5}
+  .fc .meta a{display:inline-block;margin-top:14px;color:var(--ac-text);font-size:14px;font-weight:500}
+  .fc .meta a:hover{text-decoration:underline;text-underline-offset:4px}
+  .fc .tag{display:inline-block;margin-top:10px;font-size:12px;padding:2px 10px;border-radius:999px;background:var(--ac);color:var(--ac-ink);font-weight:500}
+  .s1{font-size:clamp(34px,4vw,54px);line-height:1.08;letter-spacing:-.015em}
+  .s2{margin-top:20px;font-size:28px;line-height:1.2;display:flex;gap:24px;flex-wrap:wrap;align-items:baseline}
+  .s2 .num{font-size:28px}
+  .s3{margin-top:14px;color:var(--muted);max-width:56ch;font-size:16px;line-height:1.55}
+  .fc.cur .s1,.fc.cur .s2{font-weight:600;letter-spacing:-.03em}
+  @media (max-width:760px){
+    .fc{grid-template-columns:1fr;gap:20px;padding:24px;border-radius:24px}
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <nav><a href="accents.html#work">Работы</a><a href="./">Мастерская</a></nav>
+    <a href="accents.html" aria-label="К прототипу">
+      <svg class="mono" viewBox="0 0 56 40" aria-hidden="true">
+        <path d="M5 33 C9 22 13 12 17.5 5.5 C19 9 22.5 22 26 33"/>
+        <path d="M9.5 22.5 C14 21 18.5 21.5 23.5 22"/>
+        <path d="M48 6.5 C42 5.5 37 6 34 7 C33.5 15 33.5 25 34.5 33 C39 33.8 44 33.5 49.5 32"/>
+        <path d="M34 19.5 C38 18.8 42 19 45.5 19.6"/>
+      </svg>
+    </a>
+    <nav><a href="../cv.html">CV</a><a href="accents.html#contact">Написать</a></nav>
+  </header>
+
+  <section class="intro col">
+    <!-- буква «А» и перо -->
+    <svg class="dd" viewBox="0 0 64 64" aria-hidden="true">
+      <path class="t" d="M6 56 L22 10 L38 56 M12 40 H32"/>
+      <path class="t" d="M2 56 H12 M32 56 H42"/>
+      <path class="o" d="M60 4 C48 8 42 20 40 34 L44 36 C52 26 60 16 60 4 Z"/>
+      <path class="a" d="M40 34 L44 36 L39 44 Z"/>
+    </svg>
+    <h1 class="h">Засечки для заголовков</h1>
+    <p>Все шрифты с кириллицей и бесплатные (Google Fonts). Основной текст везде остаётся на Onest. Libre Baskerville, как у hellodani, кириллицу не поддерживает, поэтому её здесь нет.</p>
+    <div class="try">
+      <input id="txt" type="text" value="Проектирую продукты, системы и команды" aria-label="Свой текст для заголовка">
+      <label for="txt">Впишите свой заголовок, он поменяется во всех образцах</label>
+    </div>
+  </section>
+
+  <section class="fonts col" id="list"></section>
+</main>
+
+<div class="tune" role="group" aria-label="Настройки прототипа">
+  <button class="tune-t" type="button" aria-expanded="false">Настройки</button>
+  <div><span>Тема</span><button data-theme-v="light">Светлая</button><button data-theme-v="dark">Тёмная</button></div>
+</div>
+
+<script src="garden.js"></script>
+<script>
+(() => {
+  const F = window.GARDEN_FONTS;
+  const notes = {
+    lora:      ['Мягкие засечки, книжный и тёплый характер. Хорошо держит и крупный, и средний кегль.', 'Ближе всего к hellodani'],
+    literata:  ['Сделан для чтения с экрана. Строже Lora, есть оптические размеры для крупных заголовков.'],
+    ptserif:   ['Отечественная школа (ПараТайп), безупречная кириллица. Звучит немного официально.'],
+    spectral:  ['Тонкий и изящный, редакционный тон. Хорош крупно, мелко бледноват.'],
+    source:    ['Нейтральный, «умный», как у деловых медиа. Самый спокойный из всех.'],
+    playfair:  ['Высокий контраст, модный и драматичный. Работает только крупно.'],
+    cormorant: ['Очень изящный гарамон с маленькими строчными. Нужен большой кегль.'],
+    prata:     ['Журнальная дидона, одно начертание. Яркий, но быстро утомляет.'],
+    noto:      ['Дисплейный, контрастный, ровная кириллица. Строгий и «дорогой».'],
+    onest:     ['Текущий шрифт сайта, для сравнения.', 'Сейчас']
+  };
+  const list = document.getElementById('list');
+  list.innerHTML = Object.entries(F).map(([k, f]) => {
+    const fam = k === 'onest' ? `'Onest',sans-serif` : `'${f.name}',Georgia,serif`;
+    const [note, tag] = notes[k] || [''];
+    return `<article class="fc${k === 'onest' ? ' cur' : ''}">
+      <div class="meta"><b>${f.name}</b>${tag ? `<span class="tag">${tag}</span>` : ''}<p>${note}</p>
+        <a href="accents.html?head=${k}">Примерить на прототипе →</a></div>
+      <div style="font-family:${fam}">
+        <p class="s1 js-t">Проектирую продукты, системы и команды</p>
+        <p class="s2"><span>Как я работаю</span><span class="num">4 395 · 2022—2026</span></p>
+        <p class="s3" style="font-family:Onest,sans-serif">Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android. Сам веду ключевые сценарии и дизайн-систему.</p>
+      </div>
+    </article>`;
+  }).join('');
+  const inp = document.getElementById('txt');
+  inp.addEventListener('input', () => {
+    const v = inp.value.trim() || 'Проектирую продукты, системы и команды';
+    list.querySelectorAll('.js-t').forEach(e => { e.textContent = v; });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Первый экран — типографика</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  main{overflow-x:clip}
+  .lab-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-top:16px;color:var(--muted)}
+  .sw{display:flex;gap:4px}
+  .sw button{font:inherit;color:var(--muted);background:none;border:1px solid var(--line);border-radius:8px;padding:2px 10px;cursor:pointer}
+  .sw button.on{color:var(--bg);background:var(--ink);border-color:var(--ink)}
+
+  .hx{min-height:calc(100svh - 40px);display:flex;flex-direction:column;padding:var(--s4) 0}
+  .hx-top{display:flex;align-items:baseline;gap:24px}
+  .hx-top .name{font-weight:500}
+  .hx-top .st{flex:1;font-size:13px;line-height:20px;color:var(--muted)}
+  .hx-top .lk{display:flex;gap:24px}
+  .hx-body{flex:1;display:flex;flex-direction:column;justify-content:center;padding:var(--s5) 0}
+  .hx-foot{display:flex;flex-wrap:wrap;gap:8px 24px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;line-height:20px}
+  .hx-foot .muted{color:var(--muted)}
+
+  .v{display:none}
+  body[data-v="a"] .v-a,body[data-v="b"] .v-b,body[data-v="c"] .v-c{display:block}
+
+  /* общие механики */
+  .ln{display:block;overflow:hidden;padding-bottom:.06em}
+  .ln>span{display:block;transform:translateY(105%);animation:mask-in .9s var(--ease) forwards}
+  .ln:nth-child(2)>span{animation-delay:.07s}.ln:nth-child(3)>span{animation-delay:.14s}.ln:nth-child(4)>span{animation-delay:.21s}
+  .wd{font:inherit;letter-spacing:inherit;line-height:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;
+      text-decoration:underline;text-decoration-thickness:.04em;text-underline-offset:.12em;text-decoration-color:color-mix(in srgb,var(--ink) 20%,transparent);
+      transition:color .35s var(--ease),text-decoration-color .35s var(--ease)}
+  .wd:focus-visible{outline:2px solid var(--sel);outline-offset:4px;border-radius:4px}
+  .rest{transition:color .35s var(--ease)}
+  .has .rest,.has .wd:not(.on){color:color-mix(in srgb,var(--ink) 18%,transparent);text-decoration-color:transparent}
+  .has .wd.on{text-decoration-color:var(--ink)}
+  .lead{color:var(--muted);max-width:44ch}
+  .lead b{color:var(--ink);font-weight:500}
+  .fade{opacity:0;animation:fade .8s .5s var(--ease) forwards}
+
+  /* ===== A · Плакат: четыре строки, подзаголовок справа внизу ===== */
+  .v-a .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:end}
+  .v-a h1{grid-column:1/13;font-weight:600;font-size:clamp(52px,min(9.4vw,15vh),150px);line-height:.94;letter-spacing:-.05em}
+  .v-a .side{grid-column:8/13;margin-top:calc(-1 * var(--s6))}
+  .v-a .ctx{margin-top:var(--s3);min-height:60px;font-size:16px;line-height:26px}
+  .ctx{display:grid}
+  .ctx>div{grid-area:1/1;opacity:0;transform:translateY(6px);transition:opacity .3s var(--ease),transform .4s var(--ease)}
+  .ctx>div.on{opacity:1;transform:none}
+  .ctx b{font-weight:500}.ctx span{color:var(--muted)}
+
+  /* ===== B · Две строки во всю ширину ===== */
+  .v-b h1{font-weight:600;line-height:.92;letter-spacing:-.055em;white-space:nowrap}
+  .v-b h1 .ln{width:max-content}
+  .v-b .row{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;margin-top:var(--s5);align-items:start}
+  .v-b .row .lead{grid-column:1/6}
+  .v-b .row .ctx{grid-column:8/13}
+
+  /* ===== C · Указатель: три слова — три строки ===== */
+  .v-c .pre{font-weight:600;font-size:clamp(28px,3vw,44px);line-height:1.1;letter-spacing:-.03em}
+  .v-c ol{list-style:none;margin-top:var(--s3);border-top:1px solid var(--line)}
+  .v-c li{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:center;border-bottom:1px solid var(--line);cursor:pointer}
+  .v-c li .n{grid-column:1/2;font-size:13px;line-height:20px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .v-c li .wd{grid-column:2/8;justify-self:start;text-decoration:none;font-weight:600;font-size:clamp(48px,min(7.6vw,12vh),120px);line-height:1.02;letter-spacing:-.05em;padding:.04em 0 .08em}
+  .v-c li .d{grid-column:8/13;font-size:16px;line-height:26px;opacity:0;transform:translateX(-8px);transition:opacity .3s var(--ease),transform .5s var(--ease)}
+  .v-c li .d b{font-weight:500}.v-c li .d span{display:block;color:var(--muted)}
+  .v-c ol.has li:not(.on) .wd{color:color-mix(in srgb,var(--ink) 18%,transparent)}
+  .v-c li.on .d{opacity:1;transform:none}
+  .v-c .lead{margin-top:var(--s4)}
+
+  @media (max-width:900px){
+    .hx-top .st{display:none}.hx-top{justify-content:space-between}
+    .v-a .side{grid-column:1/13;margin-top:var(--s4)}
+    .v-b .row .lead,.v-b .row .ctx{grid-column:1/13}
+    .v-c li .n{display:none}.v-c li .wd{grid-column:1/13}
+    .v-c li .d{grid-column:1/13;display:none;padding-bottom:16px}
+    .v-c li.on .d{display:block}
+  }
+  @media (prefers-reduced-motion:reduce){.ln>span,.fade{animation:none;transform:none;opacity:1}}
+</style>
+</head>
+<body data-v="a">
+<main class="wrap">
+  <div class="lab-top t-cap"><a class="link" href="../index.html">← Главная</a>
+    <div class="sw" role="tablist" aria-label="Вариант"><button data-v="a" class="on">A · Плакат</button><button data-v="b">B · Во всю ширину</button><button data-v="c">C · Указатель</button></div>
+  </div>
+  <section class="hx">
+    <div class="hx-top">
+      <span class="name">Александр Ефремов</span>
+      <span class="st">Открыт к ролям Senior и Lead · Москва, гибрид или удалённо</span>
+      <span class="lk"><a class="link" href="../cv.html">CV</a><a class="link" href="../index.html#contact">Написать</a></span>
+    </div>
+
+    <div class="hx-body">
+      <!-- A -->
+      <div class="v v-a">
+        <div class="grid">
+          <h1 class="ttl" aria-label="Проектирую продукты, системы и команды">
+            <span class="ln"><span class="rest">Проектирую</span></span>
+            <span class="ln"><span><button class="wd" data-k="products">продукты</button><span class="rest">,</span></span></span>
+            <span class="ln"><span><button class="wd" data-k="systems">системы</button></span></span>
+            <span class="ln"><span><span class="rest">и </span><button class="wd" data-k="teams">команды</button></span></span>
+          </h1>
+          <div class="side fade">
+            <p class="lead"><b>Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: проектирую сам и помогаю команде расти.</p>
+            <div class="ctx" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B -->
+      <div class="v v-b">
+        <h1 class="ttl fit" aria-label="Проектирую продукты, системы и команды">
+          <span class="ln"><span><span class="rest">Проектирую </span><button class="wd" data-k="products">продукты</button><span class="rest">,</span></span></span>
+          <span class="ln"><span><button class="wd" data-k="systems">системы</button><span class="rest"> и </span><button class="wd" data-k="teams">команды</button></span></span>
+        </h1>
+        <div class="row fade">
+          <p class="lead"><b>Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: проектирую сам и помогаю команде расти.</p>
+          <div class="ctx" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- C -->
+      <div class="v v-c">
+        <p class="pre">Проектирую</p>
+        <ol class="ttl">
+          <li data-k="products"><span class="n">01</span><button class="wd" data-k="products">продукты</button><span class="d"><b>Sminex Comfort, Портал строителя, Unity Finance</b><span>Мобильные приложения, веб-порталы, торговая платформа</span></span></li>
+          <li data-k="systems"><span class="n">02</span><button class="wd" data-k="systems">системы</button><span class="d"><b>Sminex Design System</b><span>Брендбук → токены → 6 UI-китов, светлая и тёмная темы</span></span></li>
+          <li data-k="teams"><span class="n">03</span><button class="wd" data-k="teams">и команды</button><span class="d"><b>UX/UI-направление с нуля</b><span>10 дизайнеров, найм, менторство, ревью, DoR / DoD</span></span></li>
+        </ol>
+        <p class="lead fade"><b>Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: проектирую сам и помогаю команде расти.</p>
+      </div>
+    </div>
+
+    <div class="hx-foot fade"><span class="muted">Опыт в</span><span>Sminex</span><span>Нотамедиа</span><span>Unity Trade Solutions</span><span>Synergy Digital</span><span>Regym</span><span>DP Soft</span></div>
+  </section>
+</main>
+<script>
+(() => {
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const info = {
+    products: ['Sminex Comfort, Портал строителя, Unity Finance', 'Мобильные приложения, веб-порталы, торговая платформа'],
+    systems: ['Sminex Design System', 'Брендбук → токены → 6 UI-китов, светлая и тёмная темы'],
+    teams: ['UX/UI-направление с нуля', '10 дизайнеров, найм, менторство, ревью, DoR / DoD'],
+  };
+  document.querySelectorAll('.ctx').forEach(c => {
+    c.innerHTML = Object.entries(info).map(([k, [b, s]]) => `<div data-k="${k}"><b>${b}</b><br><span>${s}</span></div>`).join('');
+  });
+
+  // одно поведение для всех вариантов: слово — в фокусе, остальное уходит в тень
+  document.querySelectorAll('.ttl').forEach(ttl => {
+    const scope = ttl.closest('.v');
+    const set = k => {
+      ttl.classList.toggle('has', !!k);
+      ttl.querySelectorAll('.wd, li').forEach(el => el.classList.toggle('on', el.dataset.k === k));
+      scope.querySelectorAll('.ctx>div').forEach(el => el.classList.toggle('on', el.dataset.k === k));
+    };
+    ttl.querySelectorAll('.wd').forEach(w => {
+      const host = w.closest('li') || w;
+      if (fine) { host.addEventListener('mouseenter', () => set(w.dataset.k)); host.addEventListener('mouseleave', () => set(null)); }
+      w.addEventListener('focus', () => set(w.dataset.k)); w.addEventListener('blur', () => set(null));
+      host.addEventListener('click', () => { if (!fine) set(w.classList.contains('on') ? null : w.dataset.k); });
+    });
+  });
+
+  // B: каждая строка ровно во всю ширину контейнера
+  const fit = () => {
+    const h = document.querySelector('.v-b h1'); if (getComputedStyle(h.closest('.v')).display === 'none') return;
+    const w = h.parentElement.clientWidth;
+    h.querySelectorAll('.ln').forEach(l => { l.style.fontSize = '100px'; l.style.fontSize = Math.min(100 * w / l.scrollWidth, innerHeight * .22) + 'px'; });
+  };
+  const pick = v => {
+    document.body.dataset.v = v;
+    document.querySelectorAll('.sw button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+    try { history.replaceState(null, '', '#' + v); } catch (e) {}
+    fit();
+  };
+  document.querySelectorAll('.sw button').forEach(b => b.addEventListener('click', () => pick(b.dataset.v)));
+  pick(['a', 'b', 'c'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'a');
+  addEventListener('resize', fit);
+  document.fonts && document.fonts.ready.then(fit);
+})();
+</script>
+</body>
+</html>

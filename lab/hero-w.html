@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Прототип W — Чертёж и сборка</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  main{overflow-x:clip}
+  .lab-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;padding-top:var(--s4)}
+  .lab-hero{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:center;min-height:calc(100svh - 120px)}
+  .lab-hero>*{min-width:0}
+  .lab-hero .txt{grid-column:1/6;position:relative;z-index:2}
+  .lab-hero .txt h1{font-size:clamp(36px,min(4.2vw,9vh),72px);line-height:1.04;letter-spacing:-.035em}
+  .lab-hero .txt p{margin-top:var(--s3);max-width:42ch}
+  .lab-hero .ill{grid-column:7/13}
+
+  /* ===================== Чертёж и сборка, v2 ===================== */
+  .bp{--ln:color-mix(in srgb,var(--ink) 50%,transparent);--ln2:color-mix(in srgb,var(--ink) 16%,transparent);--ac:#C9B48A;--hl:#0D99FF;
+      --gap:0px;--tx:0deg;--ty:0deg;--sc:1;--sx:0%;position:relative;width:100%;aspect-ratio:1/1;perspective:2200px;perspective-origin:50% 30%;outline:none}
+  .bp-rig{position:absolute;inset:0;transform-style:preserve-3d;
+      transform:translate(var(--sx),var(--sy,0%)) rotateX(calc(57deg + var(--ty))) rotateZ(calc(-40deg + var(--tx))) scale(var(--sc));
+      transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+  .bp-stack{position:absolute;left:12%;right:12%;top:22%;aspect-ratio:16/10.5;transform-style:preserve-3d}
+  .bp.open{--gap:78px;--sc:.7;--sx:-16%;--sy:12%}
+
+  .pl{--lift:0px;position:absolute;inset:0;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .6s var(--ease)}
+  .pl[data-i="0"]{transform:translateZ(var(--lift))}
+  .pl[data-i="1"]{transform:translateZ(calc(var(--gap) * 1 + var(--lift)))}
+  .pl[data-i="2"]{transform:translateZ(calc(var(--gap) * 2 + var(--lift)))}
+  .pl[data-i="3"]{transform:translateZ(calc(var(--gap) * 3 + var(--lift)))}
+  .bp.open .pl.hl{--lift:22px}
+  /* в собранном виде видны только экраны; остальные слои — внутри стопки */
+  .pl[data-i="0"],.pl[data-i="1"]{opacity:0}
+  .bp.open .pl[data-i="0"],.bp.open .pl[data-i="1"]{opacity:1}
+  /* непрозрачный лист: верхние слои перекрывают нижние */
+  .pl .sheet{position:absolute;inset:-6%;border-radius:22px;background:var(--bg);border:1px solid var(--ln2);opacity:0;transition:opacity .6s var(--ease),border-color .2s}
+  .bp.open .pl .sheet{opacity:1}
+  .pl.hl .sheet{border-color:var(--hl)}
+  .pl[data-i="3"] .sheet{display:none}
+
+  /* направляющие чертежа: из углов основы вверх */
+  .gd{position:absolute;width:0;height:calc(var(--gap) * 3);border-left:1px dashed var(--ln2);transform-origin:0 0;transform:rotateX(90deg);opacity:0;transition:height 1s var(--ease),opacity .5s}
+  .bp.open .gd{opacity:1}
+  .gd.a{left:-6%;top:-6%}.gd.b{right:-6%;top:-6%}.gd.c{left:-6%;bottom:-6%}.gd.d{right:-6%;bottom:-6%}
+
+  /* детали экранов: слетаются при загрузке */
+  .pc{position:absolute;transition:transform 1.3s cubic-bezier(.2,.9,.2,1),opacity .8s ease;transition-delay:var(--dl,0s)}
+  .bp:not(.built) .pc{transform:translate3d(var(--dx),var(--dy),var(--dz)) rotate(var(--dr));opacity:0}
+  .fr{position:absolute;border:1px solid var(--ln);background:var(--bg);transition:opacity .8s ease .2s}
+  .bp:not(.built) .fr{opacity:0}
+  .web{left:0;top:0;width:68%;height:100%;border-radius:14px;overflow:hidden}
+  .mob{left:74%;top:-4%;width:26%;height:108%;border-radius:24px;overflow:hidden}
+  .sk{position:absolute;border-radius:4px;background:var(--ln2)}
+  .sk.d{background:var(--ink)}.sk.ac{background:var(--ac)}
+  .sk.bx{background:none;border:1px solid var(--ln2);border-radius:8px}
+  .sk.dot{border-radius:50%;background:none;border:1px solid var(--ln)}
+
+  /* 0 · токены */
+  .tc{position:absolute;aspect-ratio:1;border-radius:50%;border:1px solid var(--ln)}
+  .tr{position:absolute;aspect-ratio:1;border:1px solid var(--ln);border-right:0;border-bottom:0}
+  .ts{position:absolute;background:var(--ln2);border-radius:2px}
+  /* 1 · компоненты */
+  .cb{position:absolute;border-radius:10px;background:var(--ink)}
+  .cb.ac{background:var(--ac)}
+  .cc{position:absolute;border:1px solid var(--ln);border-radius:10px}
+  .ct{position:absolute;border:1px solid var(--ln);border-radius:99px}
+  .ct::after{content:"";position:absolute;right:6%;top:12%;height:76%;aspect-ratio:1;border-radius:50%;background:var(--ac)}
+  /* 3 · пользователь */
+  .usr{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .usr path{fill:none;stroke:var(--ink);stroke-width:1.2;stroke-dasharray:2 5;opacity:.55}
+  .tap{position:absolute;width:6%;aspect-ratio:1;border-radius:50%;border:1.5px solid var(--hl);transform:translate(-50%,-50%) scale(.3);opacity:0}
+  .bp.built .tap{animation:tap 1.4s 2.4s var(--ease) 1 forwards}
+  @keyframes tap{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(2.6)}}
+  .cur,.usr{opacity:0;transition:opacity .6s 1.8s}
+  .cur{position:absolute;color:var(--ink)}
+  .bp.built .cur,.bp.built .usr{opacity:1}
+
+  /* ровные подписи слоёв справа, с выносками */
+  .bp-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+  .bp-lines line{stroke:var(--ln);stroke-width:1;opacity:0;transition:opacity .3s}
+  .bp-lines circle{fill:var(--ink);opacity:0;transition:opacity .3s}
+  .bp.labels .bp-lines line{opacity:.5}.bp.labels .bp-lines circle{opacity:1}
+  .bp-lines .hl{stroke:var(--hl);fill:var(--hl);opacity:1!important}
+  .lb{position:absolute;transform:translateY(-50%);font-size:13px;line-height:18px;white-space:nowrap;opacity:0;transition:opacity .3s,color .2s;pointer-events:none;cursor:default}
+  .lb b{font-weight:500}.lb span{display:block;color:var(--muted)}
+  .bp.labels .lb{opacity:1;pointer-events:auto}
+  .lb.hl b{color:var(--hl)}
+
+  @media (max-width:900px){
+    .lab-hero{grid-template-columns:1fr}.lab-hero .txt,.lab-hero .ill{grid-column:1}
+    .bp.open{--sc:.56;--sx:-24%;--sy:6%;--gap:50px}
+    .lb span{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){.bp *{transition:none!important;animation:none!important}.bp:not(.built) .pc,.bp:not(.built) .fr{transform:none;opacity:1}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="lab-top t-cap"><a class="link" href="../index.html">← Главная</a><span>Прототип W · «Чертёж и сборка», v2</span><a class="link" href="hero-a.html">Прототип A →</a></div>
+  <section class="lab-hero">
+    <div class="txt">
+      <h1 class="t-display">Проектирую продукты, системы и команды</h1>
+      <p class="t-lead muted"><b style="color:var(--ink);font-weight:500">Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: сам проектирую и помогаю команде расти.</p>
+    </div>
+    <div class="ill">
+      <div class="bp" id="bp" tabindex="0" role="img" aria-label="Продукт как чертёж: токены, компоненты, экраны веб и мобайл, пользователь. Наведите, чтобы разобрать на слои.">
+        <div class="bp-rig">
+          <div class="bp-stack">
+            <div class="pl" data-i="0" data-name="Токены" data-sub="Цвет, скругления, отступы">
+              <span class="sheet"></span>
+              <span class="gd a"></span><span class="gd b"></span><span class="gd c"></span><span class="gd d"></span>
+              <span class="tc" style="left:8%;top:22%;width:12%;background:var(--ink);border-color:var(--ink)"></span>
+              <span class="tc" style="left:23%;top:22%;width:12%;background:var(--ac);border-color:var(--ac)"></span>
+              <span class="tc" style="left:38%;top:22%;width:12%"></span>
+              <span class="tr" style="left:60%;top:24%;width:9%;border-top-left-radius:3px"></span>
+              <span class="tr" style="left:72%;top:24%;width:9%;border-top-left-radius:10px"></span>
+              <span class="tr" style="left:84%;top:24%;width:9%;border-top-left-radius:22px"></span>
+              <span class="ts" style="left:8%;top:66%;width:4%;height:14%"></span><span class="ts" style="left:15%;top:66%;width:4%;height:14%"></span><span class="ts" style="left:24%;top:66%;width:4%;height:14%"></span><span class="ts" style="left:36%;top:66%;width:4%;height:14%"></span>
+              <span class="ts" style="left:56%;top:64%;width:36%;height:4%"></span><span class="ts" style="left:56%;top:74%;width:26%;height:4%"></span>
+            </div>
+            <div class="pl" data-i="1" data-name="Компоненты" data-sub="Кнопки, карточки, поля">
+              <span class="sheet"></span>
+              <span class="cb" style="left:8%;top:14%;width:24%;height:13%"></span>
+              <span class="cb ac" style="left:36%;top:14%;width:24%;height:13%"></span>
+              <span class="ct" style="left:68%;top:15%;width:18%;height:11%"></span>
+              <span class="cc" style="left:8%;top:38%;width:30%;height:34%"></span>
+              <span class="cc" style="left:42%;top:38%;width:30%;height:34%"></span>
+              <span class="cc" style="left:76%;top:38%;width:16%;height:50%"></span>
+              <span class="cc" style="left:8%;top:78%;width:64%;height:10%"></span>
+            </div>
+            <div class="pl" data-i="2" data-name="Экраны" data-sub="Веб и мобайл">
+              <span class="sheet"></span>
+              <div class="fr web">
+                <span class="pc sk dot" style="left:3%;top:4%;width:1.6%;aspect-ratio:1"></span><span class="pc sk dot" style="left:6%;top:4%;width:1.6%;aspect-ratio:1"></span><span class="pc sk dot" style="left:9%;top:4%;width:1.6%;aspect-ratio:1"></span>
+                <span class="pc sk" style="left:0;top:11%;width:100%;height:1px;border-radius:0"></span>
+                <span class="pc sk" style="left:20%;top:11%;width:1px;height:89%;border-radius:0"></span>
+                <span class="pc sk d" style="left:4%;top:18%;width:11%;height:3%"></span>
+                <span class="pc sk" style="left:4%;top:26%;width:10%;height:2.5%"></span><span class="pc sk" style="left:4%;top:33%;width:12%;height:2.5%"></span>
+                <span class="pc sk d" style="left:26%;top:19%;width:28%;height:5%"></span>
+                <span class="pc sk ac" style="left:79%;top:18%;width:16%;height:7%;border-radius:8px"></span>
+                <span class="pc sk bx" style="left:26%;top:32%;width:21%;height:24%"></span><span class="pc sk bx" style="left:50%;top:32%;width:21%;height:24%"></span><span class="pc sk bx" style="left:74%;top:32%;width:21%;height:24%"></span>
+                <span class="pc sk" style="left:26%;top:64%;width:62%;height:3%"></span><span class="pc sk" style="left:26%;top:73%;width:48%;height:3%"></span><span class="pc sk" style="left:26%;top:82%;width:56%;height:3%"></span>
+              </div>
+              <div class="fr mob">
+                <span class="pc sk d" style="left:33%;top:3%;width:34%;height:3.5%;border-radius:9px"></span>
+                <span class="pc sk d" style="left:10%;top:12%;width:52%;height:3%"></span>
+                <span class="pc sk bx" style="left:8%;top:20%;width:84%;height:22%;border-radius:12px"></span>
+                <span class="pc sk" style="left:10%;top:48%;width:72%;height:2.5%"></span><span class="pc sk" style="left:10%;top:55%;width:56%;height:2.5%"></span>
+                <span class="pc sk ac" style="left:8%;top:78%;width:84%;height:8%;border-radius:12px"></span>
+                <span class="pc sk" style="left:22%;top:93%;width:56%;height:1.2%"></span>
+              </div>
+            </div>
+            <div class="pl" data-i="3" data-name="Пользователь" data-sub="Сценарий и задача">
+              <svg class="usr" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M30 22 C 48 4, 72 40, 87 79"/></svg>
+              <span class="tap" style="left:87%;top:80%"></span>
+              <span class="cur" style="left:87%;top:80%"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M1.5 1.5l14 7.2-6.3 1.6-3 6.2z" fill="currentColor" stroke="var(--bg)" stroke-width="1.4" stroke-linejoin="round"/></svg></span>
+            </div>
+          </div>
+        </div>
+        <svg class="bp-lines" aria-hidden="true"></svg>
+        <div class="bp-lbls"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  const bp = document.getElementById('bp'), svg = bp.querySelector('.bp-lines'), lbls = bp.querySelector('.bp-lbls');
+  const plates = [...bp.querySelectorAll('.pl')];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const rnd = (a, b) => a + Math.random() * (b - a);
+
+  // сборка: детали экранов слетаются из пространства, один раз
+  bp.querySelectorAll('.pc').forEach((el, i) => {
+    el.style.setProperty('--dx', rnd(-220, 220).toFixed(0) + 'px');
+    el.style.setProperty('--dy', rnd(-180, 180).toFixed(0) + 'px');
+    el.style.setProperty('--dz', rnd(160, 520).toFixed(0) + 'px');
+    el.style.setProperty('--dr', rnd(-35, 35).toFixed(0) + 'deg');
+    el.style.setProperty('--dl', (.15 + i * .03 + rnd(0, .12)).toFixed(2) + 's');
+  });
+  if (reduce) bp.classList.add('built'); else { bp.getBoundingClientRect(); setTimeout(() => bp.classList.add('built'), 300); }
+
+  // ровные подписи справа: позиция — по спроецированному листу слоя
+  const labels = plates.map((p, i) => {
+    const d = document.createElement('div');
+    d.className = 'lb'; d.innerHTML = `<b>${String(i + 1).padStart(2, '0')} · ${p.dataset.name}</b><span>${p.dataset.sub}</span>`;
+    d.addEventListener('mouseenter', () => focus(i)); d.addEventListener('mouseleave', () => focus(-1));
+    lbls.appendChild(d); return d;
+  });
+  let focused = -1;
+  function place() {
+    const br = bp.getBoundingClientRect();
+    const rs = plates.map(p => (p.querySelector('.sheet') || p.querySelector('.usr')).getBoundingClientRect());
+    const lw = Math.max(...labels.map(l => l.offsetWidth));
+    const colX = Math.min(Math.max(...rs.map(r => r.right)) - br.left + 24, innerWidth - br.left - lw - 12);
+    const items = rs.map((r, i) => ({ i, ax: r.right - br.left - 6, ay: r.top - br.top + r.height * .42 })).sort((a, b) => a.ay - b.ay);
+    let prev = -Infinity; items.forEach(it => { it.ly = Math.max(it.ay, prev + 44); prev = it.ly; });
+    let html = '';
+    items.forEach(it => {
+      const lb = labels[it.i]; lb.style.left = colX + 'px'; lb.style.top = it.ly + 'px';
+      const cls = it.i === focused ? ' class="hl"' : '';
+      html += `<line${cls} x1="${it.ax}" y1="${it.ay}" x2="${colX - 8}" y2="${it.ly}"/><circle${cls} cx="${it.ax}" cy="${it.ay}" r="2.2"/>`;
+    });
+    svg.innerHTML = html;
+  }
+  let until = 0, raf = null;
+  const follow = ms => { until = Math.max(until, performance.now() + ms); if (!raf) { const loop = () => { place(); raf = performance.now() < until ? requestAnimationFrame(loop) : null; }; raf = requestAnimationFrame(loop); } setTimeout(place, ms); };
+  function focus(i) { focused = i; plates.forEach((p, k) => p.classList.toggle('hl', k === i)); labels.forEach((l, k) => l.classList.toggle('hl', k === i)); follow(750); }
+  function setOpen(v) {
+    bp.classList.toggle('open', v);
+    if (v) setTimeout(() => bp.classList.contains('open') && bp.classList.add('labels'), 500); else { bp.classList.remove('labels'); focus(-1); }
+    follow(1100);
+  }
+  plates.forEach((p, i) => { p.addEventListener('mouseenter', () => bp.classList.contains('open') && focus(i)); p.addEventListener('mouseleave', () => focus(-1)); });
+
+  if (fine) {
+    bp.addEventListener('pointerenter', () => setOpen(true));
+    bp.addEventListener('pointerleave', () => { setOpen(false); bp.style.setProperty('--tx', '0deg'); bp.style.setProperty('--ty', '0deg'); });
+    bp.addEventListener('pointermove', e => {
+      const r = bp.getBoundingClientRect();
+      bp.style.setProperty('--tx', (((e.clientX - r.left) / r.width - .5) * 6).toFixed(2) + 'deg');
+      bp.style.setProperty('--ty', ((.5 - (e.clientY - r.top) / r.height) * -5).toFixed(2) + 'deg');
+      follow(300);
+    });
+  } else bp.addEventListener('click', () => setOpen(!bp.classList.contains('open')));
+  bp.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(!bp.classList.contains('open')); } if (e.key === 'Escape') setOpen(false); });
+  addEventListener('resize', place);
+})();
+</script>
+</body>
+</html>

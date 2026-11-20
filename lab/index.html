@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мастерская</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="garden.css">
+<script>try{const t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+  :root{--t-hero:#FFD24A;--t-type:#8FD8F6;--t-char:#FF9FCB;--t-style:#9FE2B5}
+  .intro{text-align:center;padding:clamp(64px,10vh,120px) 0 40px}
+  .intro .dd{margin:0 auto 18px;width:72px;height:72px}
+  .intro h1{font-size:clamp(40px,5vw,64px);line-height:1.08}
+  .intro p{margin:20px auto 0;color:var(--muted);max-width:48ch;font-size:18px;line-height:1.55}
+
+  .filters{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-bottom:40px}
+  .filters button{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line);font-size:14px;color:var(--ink);transition:background .2s,color .2s}
+  .filters button i{width:10px;height:10px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+  .filters button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+  .grid{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:40px 24px}
+  .ex{display:block;color:inherit}
+  .ex[hidden]{display:none}
+  .pv{position:relative;aspect-ratio:16/10;border-radius:28px;overflow:hidden;background:var(--card);container-type:inline-size}
+  .pv iframe{position:absolute;top:0;left:0;width:1440px;height:900px;border:0;transform-origin:0 0;pointer-events:none;background:var(--bg)}
+  .pv::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 8%,transparent)}
+  .pv .chip{position:absolute;left:14px;top:14px;z-index:2;display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:999px;background:var(--c);color:#141414;font-size:12px;font-weight:500}
+  .ex .pv{transition:transform .5s var(--ease)}
+  .ex:hover .pv{transform:translateY(-4px) rotate(-.4deg)}
+  .ex h2{margin-top:16px;font-size:24px;line-height:1.25}
+  .ex p{margin-top:6px;color:var(--muted);font-size:15px;line-height:1.5}
+
+  .back{text-align:center;margin-top:72px}
+  .back a{color:var(--ac-text);font-weight:500}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  @media (max-width:760px){.grid{grid-template-columns:1fr;gap:32px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <nav><a href="accents.html#work">Работы</a><a href="./" aria-current="page">Мастерская</a></nav>
+    <a href="accents.html" aria-label="На главную">
+      <svg class="mono" viewBox="0 0 56 40" aria-hidden="true">
+        <path d="M5 33 C9 22 13 12 17.5 5.5 C19 9 22.5 22 26 33"/>
+        <path d="M9.5 22.5 C14 21 18.5 21.5 23.5 22"/>
+        <path d="M48 6.5 C42 5.5 37 6 34 7 C33.5 15 33.5 25 34.5 33 C39 33.8 44 33.5 49.5 32"/>
+        <path d="M34 19.5 C38 18.8 42 19 45.5 19.6"/>
+      </svg>
+    </a>
+    <nav><a href="../cv.html">CV</a><a href="accents.html#contact">Написать</a></nav>
+  </header>
+
+  <section class="intro">
+    <!-- лейка поливает росток -->
+    <svg class="dd" viewBox="0 0 72 72" aria-hidden="true">
+      <path class="t" d="M14 24 C14 10 30 10 30 24"/>
+      <path class="t" d="M38 34 L50 20"/>
+      <path class="o" d="M6 24 H38 V48 Q38 53 33 53 H11 Q6 53 6 48 Z"/>
+      <circle class="a" cx="51.5" cy="17.5" r="4.5"/>
+      <path class="as" d="M56 26 L57 30 M52 30 L52 34 M60 32 L61 35"/>
+      <path class="t" d="M58 68 C58 60 58 54 59 48"/>
+      <path class="o" d="M58.5 56 C52 56 47 52 46 45 C53 44 58 49 58.5 56 Z"/>
+      <path class="o" d="M59 50 C60 43 65 39 71 40 C70 47 65 51 59 50 Z"/>
+      <path class="t" d="M44 68 H72"/>
+    </svg>
+    <h1 class="h">Мастерская</h1>
+    <p>Здесь живут прототипы и эксперименты: первые экраны, типографика, персонаж Саша. Кейсы — на главной, здесь — то, из чего они вырастают.</p>
+  </section>
+
+  <div class="filters" role="group" aria-label="Фильтр">
+    <button data-f="" aria-pressed="true">Всё</button>
+    <button data-f="hero" aria-pressed="false" style="--c:var(--t-hero)"><i></i>Первый экран</button>
+    <button data-f="type" aria-pressed="false" style="--c:var(--t-type)"><i></i>Типографика</button>
+    <button data-f="char" aria-pressed="false" style="--c:var(--t-char)"><i></i>Персонаж</button>
+    <button data-f="style" aria-pressed="false" style="--c:var(--t-style)"><i></i>Стиль</button>
+  </div>
+
+  <section class="grid" id="grid"></section>
+
+  <p class="back"><a href="accents.html">← На главную</a></p>
+</main>
+
+<footer><div class="wrap t-cap"><span>© 2026 Александр Ефремов · Москва</span><a class="link" href="accents.html">Главная</a></div></footer>
+
+<div class="tune" role="group" aria-label="Настройки прототипа">
+  <button class="tune-t" type="button" aria-expanded="false">Настройки</button>
+  <div><span>Заголовки</span><select aria-label="Шрифт заголовков"></select></div>
+  <div><span>Тема</span><button data-theme-v="light">Светлая</button><button data-theme-v="dark">Тёмная</button></div>
+</div>
+
+<script src="garden.js"></script>
+<script>
+(() => {
+  const TAGS = { hero: 'Первый экран', type: 'Типографика', char: 'Персонаж', style: 'Стиль' };
+  const ITEMS = [
+    ['accents.html',   'style', 'Цветные марки',               'Новый стиль: личный оранжевый, засечки и рисунки в линии Саши.'],
+    ['../sasha.html',  'char',  'Саша',                        'Персонаж сайта: здоровается, приходит и садится на линию подвала.'],
+    ['hero-w.html',    'hero',  'Чертёж и сборка',             'Продукт раскладывается на слои по наведению.'],
+    ['hero-a.html',    'hero',  'Слои продукта',               'Изометрический разбор экрана на слои.'],
+    ['hero-c.html',    'hero',  'Одна система, много продуктов','Первый экран о дизайн-системе как общей основе.'],
+    ['hero-p1.html',   'hero',  'Слова-превью',                'Слова в заголовке показывают работы.'],
+    ['hero-p2.html',   'hero',  'Колода работ',                'Работы собраны в колоду карточек.'],
+    ['hero-b.html',    'hero',  'Первый экран, варианты B',    'Сравнение вариантов первого экрана.'],
+    ['serif.html',     'type',  'Засечки для заголовков',      'Девять кириллических шрифтов рядом с Onest.'],
+    ['hero-type.html', 'type',  'Типографика первого экрана',  'Варианты набора главного заголовка.'],
+    ['hero-sel.html',  'type',  'Выделение слова',             'Как выделить активное слово в заголовке.'],
+    ['../palette.html','style', 'Цвет сцены кейса',            'Подбор цвета фона для сцен в кейсах.']
+  ];
+  const grid = document.getElementById('grid');
+  grid.innerHTML = ITEMS.map(([href, t, title, text]) => `
+    <a class="ex" href="${href}" data-t="${t}">
+      <div class="pv"><span class="chip" style="--c:var(--t-${t})">${TAGS[t]}</span>
+        <iframe data-src="${href}" title="Превью: ${title}" tabindex="-1" aria-hidden="true" loading="lazy"></iframe></div>
+      <h2 class="h">${title}</h2>
+      <p>${text}</p>
+    </a>`).join('');
+
+  /* Превью: настоящая страница в 1440 px, уменьшенная до ширины карточки.
+     Загружаем только когда карточка рядом с экраном. */
+  const fit = pv => { const f = pv.querySelector('iframe'); f.style.transform = `scale(${pv.clientWidth / 1440})`; };
+  const ro = new ResizeObserver(es => es.forEach(e => fit(e.target)));
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const f = e.target.querySelector('iframe');
+    if (!f.src) f.src = f.dataset.src;
+    io.unobserve(e.target);
+  }), { rootMargin: '300px 0px' });
+  grid.querySelectorAll('.pv').forEach(pv => { ro.observe(pv); io.observe(pv); fit(pv); });
+
+  /* Фильтр */
+  const fs = document.querySelector('.filters');
+  fs.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    fs.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    grid.querySelectorAll('.ex').forEach(x => { x.hidden = !!b.dataset.f && x.dataset.t !== b.dataset.f; });
+  });
+})();
+</script>
+<script src="../assets/sasha.js"></script>
+</body>
+</html>

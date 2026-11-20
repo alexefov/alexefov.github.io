@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Цвет сцены кейса</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px 24px;margin-top:var(--s5)}
+  .opt .stage{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;gap:16px;padding:24px}
+  .opt .stage img.p{width:52%}
+  .opt .stage img.s{width:24%;border-radius:10px}
+  .opt h3{margin-top:var(--s2)}
+  .opt .n{font-size:40px;line-height:1.1;font-weight:600;letter-spacing:-.02em;margin-top:var(--s2)}
+  .sw{display:flex;gap:8px;margin-top:12px}
+  .sw i{width:28px;height:28px;border-radius:8px;border:1px solid var(--line)}
+  @media (max-width:900px){.opts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="wrap" style="padding-top:var(--s6);padding-bottom:var(--s6)">
+  <span class="t-cap">Служебная страница — не для публикации</span>
+  <h1 class="t-h1" style="margin-top:var(--s2)">Цвет сцены кейса Sminex Comfort</h1>
+  <p class="t-lead muted measure" style="margin-top:var(--s3)">Цвет живёт только внутри сцены с экранами и на главной цифре результата. Всё остальное на сайте — монохром. Сравните варианты и назовите номер.</p>
+
+  <div class="opts">
+    <div class="opt" style="--stage:#18191B;--gold:#B39B6E"><div class="stage"><img class="p" src="assets/img/comfort/phone-3d.png" alt=""><img class="s" src="assets/img/comfort/request.png" alt=""></div><h3 class="t-h3">1 · Графит + золото</h3><div class="n" style="color:var(--gold)">915 млн ₽</div><div class="sw"><i style="background:#18191B"></i><i style="background:#B39B6E"></i></div></div>
+    <div class="opt" style="--stage:#15130F;--gold:#C9B48A"><div class="stage"><img class="p" src="assets/img/comfort/phone-3d.png" alt=""><img class="s" src="assets/img/comfort/request.png" alt=""></div><h3 class="t-h3">2 · Тёплый чёрный + шампань</h3><div class="n" style="color:var(--gold)">915 млн ₽</div><div class="sw"><i style="background:#15130F"></i><i style="background:#C9B48A"></i></div></div>
+    <div class="opt" style="--stage:#1D211B;--gold:#B8A06A"><div class="stage"><img class="p" src="assets/img/comfort/phone-3d.png" alt=""><img class="s" src="assets/img/comfort/request.png" alt=""></div><h3 class="t-h3">3 · Глубокая олива + золото</h3><div class="n" style="color:var(--gold)">915 млн ₽</div><div class="sw"><i style="background:#1D211B"></i><i style="background:#B8A06A"></i></div></div>
+    <div class="opt" style="--stage:#24161A;--gold:#C2A36E"><div class="stage"><img class="p" src="assets/img/comfort/phone-3d.png" alt=""><img class="s" src="assets/img/comfort/request.png" alt=""></div><h3 class="t-h3">4 · Винный + золото</h3><div class="n" style="color:var(--gold)">915 млн ₽</div><div class="sw"><i style="background:#24161A"></i><i style="background:#C2A36E"></i></div></div>
+    <div class="opt" style="--stage:#E4DFD6;--gold:#8A6E42"><div class="stage"><img class="p" src="assets/img/comfort/phone-3d.png" alt=""><img class="s" src="assets/img/comfort/request.png" alt=""></div><h3 class="t-h3">5 · Светлый камень + бронза</h3><div class="n" style="color:var(--gold)">915 млн ₽</div><div class="sw"><i style="background:#E4DFD6"></i><i style="background:#8A6E42"></i></div></div>
+    <div class="opt" style="--stage:#C9BCA6;--gold:#6E5530"><div class="stage"><img class="p" src="assets/img/comfort/phone-3d.png" alt=""><img class="s" src="assets/img/comfort/request.png" alt=""></div><h3 class="t-h3">6 · Песок + тёмная бронза</h3><div class="n" style="color:var(--gold)">915 млн ₽</div><div class="sw"><i style="background:#C9BCA6"></i><i style="background:#6E5530"></i></div></div>
+  </div>
+  <p class="t-cap" style="margin-top:var(--s5)">Важно: у картинок для сторов («Пропуска», «Уведомления») тёмно-синий фон вшит в изображение. С любой сценой, кроме синей, лучше выгрузить из Figma «чистые» экраны без фона сторов.</p>
+</main>
+</body>
+</html>

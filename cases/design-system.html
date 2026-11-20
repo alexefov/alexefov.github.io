@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sminex Design System — кейс · Александр Ефремов</title>
+<meta name="description" content="Кейс: как от небольшого брендбука выросла цифровая дизайн-система продуктов Sminex — аудит, токены, компоненты, шесть UI-китов и внедрение.">
+<meta property="og:title" content="Sminex Design System — кейс Александра Ефремова">
+<meta property="og:description" content="От брендбука до цифровой экосистемы продуктов: токены, компоненты, шесть UI-китов, Figma ↔ Storybook и ИИ.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="../assets/case.css">
+<script>try{const t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body class="case-sds">
+<main>
+  <!-- 00 · Обзор -->
+  <section class="c-head wrap" id="overview" data-nav="overview">
+    <span class="t-cap rv">Кейс · Дизайн-система · Web, Mobile, enterprise</span>
+    <h1 class="t-h1 rv" style="margin-top:var(--s2)">Sminex Design System: от брендбука до цифровой экосистемы продуктов</h1>
+    <p class="t-lead muted rv">У Sminex был сильный бренд, но каждый цифровой продукт говорил на своём языке. Я построил дизайн-систему, которая переводит бренд в токены и компоненты и даёт всем продуктам — от приложения для жителей до учётных систем — одну основу.</p>
+    <div class="facts-row rv">
+      <div><span class="t-cap">Роль</span><b>Автор и лид дизайн-системы</b></div>
+      <div><span class="t-cap">Период</span><b>2024—2026</b></div>
+      <div><span class="t-cap">Масштаб</span><b>6 UI-китов, 4 продуктовых кластера</b></div>
+      <div><span class="t-cap">Инструменты</span><b>Figma Variables, Storybook, Ant Design v6</b></div>
+    </div>
+    <div class="c-cover rv">
+      <div class="sds-stage" data-sel>
+        <div class="pipe">
+          <div class="st"><span>Было</span><b>Брендбук</b><span style="margin-top:8px">Логотип, цвета, шрифт — для печати и рекламы</span></div>
+          <div class="ar" aria-hidden="true">→</div>
+          <div class="st"><span>Основа</span><b>Токены</b><span style="margin-top:8px">Цвет, типографика, отступы, радиусы, темы</span></div>
+          <div class="ar" aria-hidden="true">→</div>
+          <div class="st"><span>Экосистема</span><div class="kits"><i>Web / PWA</i><i>Web External</i><i>Mobile</i><i>BIM</i><i>1С</i><i>Ant Design v6</i></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Процесс -->
+  <section class="section wrap" id="process" data-nav="process">
+    <div class="sec-head"><h2 class="t-h2 rv">Процесс</h2><p class="muted rv">Дизайн-система — это продукт для дизайнеров и разработчиков. Поэтому и строилась как продукт: от исследования до внедрения. Нажмите на этап.</p></div>
+    <div class="gantt rv" style="--weeks:24">
+      <div class="g-scale" aria-hidden="true"><span></span><div style="grid-template-columns:repeat(8,minmax(0,1fr))"><i>К3·24</i><i>К4·24</i><i>К1·25</i><i>К2·25</i><i>К3·25</i><i>К4·25</i><i>К1·26</i><i>К2·26</i></div></div>
+      <a href="#audit" style="--s:0;--d:2"><span class="g-n">01</span><span class="g-l">Аудит</span><span class="g-t"><b></b></span></a>
+      <a href="#brand" style="--s:1;--d:3"><span class="g-n">02</span><span class="g-l">Принципы и бренд</span><span class="g-t"><b></b></span></a>
+      <a href="#tokens" style="--s:3;--d:4"><span class="g-n">03</span><span class="g-l">Токены и темы</span><span class="g-t"><b></b></span></a>
+      <a href="#components" style="--s:5;--d:7"><span class="g-n">04</span><span class="g-l">Компоненты</span><span class="g-t"><b></b></span></a>
+      <a href="#kits" style="--s:8;--d:9"><span class="g-n">05</span><span class="g-l">UI-киты платформ</span><span class="g-t"><b></b></span></a>
+      <a href="#code" style="--s:10;--d:10"><span class="g-n">06</span><span class="g-l">Figma ↔ код</span><span class="g-t"><b></b></span></a>
+      <a href="#adoption" style="--s:9;--d:15"><span class="g-n">07</span><span class="g-l">Внедрение</span><span class="g-t"><b></b></span></a>
+      <a href="#ai" style="--s:17;--d:7"><span class="g-n">08</span><span class="g-l">ИИ и автоматизация</span><span class="g-t"><b></b></span></a>
+    </div>
+  </section>
+
+  <!-- 01 · Аудит -->
+  <section class="section wrap" id="audit" data-nav="audit">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">01 · Аудит</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Один бренд — несколько разных Sminex</h2>
+      </div>
+      <div class="r">
+        <p class="t-lead muted rv">Каждый продукт рос своей командой: свои кнопки, свои оттенки серого, свои иконки. Прежде чем рисовать систему, нужно было измерить, насколько всё разошлось.</p>
+        <div class="rows rv" style="margin-top:var(--s5)">
+          <div><b>Инвентаризация</b><span>Скриншоты всех продуктов, разбор по типам компонентов и стилей</span></div>
+          <div><b>Библиотеки</b><span>Какие файлы и киты уже есть в Figma и кто ими пользуется</span></div>
+          <div><b>Процессы</b><span>Как дизайн попадает в разработку и где теряется по пути</span></div>
+          <div><b>Интервью</b><span>Дизайнеры и разработчики: что мешает собирать экраны быстро</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="sds-stage rv" style="margin-top:var(--s5)" aria-label="Итоги аудита">
+      <div class="inv">
+        <div><h3><b>Кнопки</b><span class="fill">23 вида</span></h3><div class="btns"><i style="width:120px;border-radius:4px"></i><i style="width:96px;border-radius:12px"></i><i style="width:140px;border-radius:22px;opacity:.6"></i><i style="width:110px;border-radius:8px;opacity:.4"></i></div></div>
+        <div><h3><b>Серые</b><span class="fill">41 оттенок</span></h3><div class="sw"><i style="background:#3A3C40"></i><i style="background:#45474C"></i><i style="background:#505257"></i><i style="background:#5B5D62"></i><i style="background:#66686D"></i><i style="background:#717378"></i><i style="background:#7C7E83"></i><i style="background:#87898E"></i><i style="background:#929499"></i><i style="background:#9D9FA4"></i><i style="background:#A8AAAF"></i><i style="background:#B3B5BA"></i></div></div>
+        <div><h3><b>Стили текста</b><span class="fill">18</span></h3><div class="type"><i style="width:90%"></i><i style="width:76%;height:12px"></i><i style="width:64%"></i><i style="width:82%;height:6px"></i><i style="width:55%;height:10px"></i></div></div>
+        <div><h3><b>Иконки</b><span>96</span></h3><div class="ic"><i></i><i></i><i class="old"></i><i></i><i></i><i></i><i></i><i class="old"></i><i></i><i></i><i></i><i class="old"></i></div></div>
+      </div>
+    </div>
+    <p class="t-cap sds-cap rv">Аудит: сколько вариантов одного и того же элемента жило в продуктах. Пунктиром — устаревшие копии иконок.</p>
+  </section>
+
+  <!-- 02 · Принципы и бренд -->
+  <section class="section wrap" id="brand" data-nav="brand">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">02 · Принципы и бренд</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Перевести брендбук на язык интерфейсов</h2>
+      </div>
+      <div class="r">
+        <p class="t-lead muted rv">Брендбук отвечал на вопрос «как выглядит Sminex на баннере», но не «как выглядит кнопка, ошибка или пустой экран». Сначала договорились о принципах, потом перевели каждый элемент бренда в правило для интерфейса.</p>
+      </div>
+    </div>
+    <div class="jobs">
+      <article class="rv"><span class="t-cap">Принцип 01</span><p><b>Спокойствие вместо декора.</b> Премиальность — в воздухе, ритме и точности, а не в украшениях.</p></article>
+      <article class="rv"><span class="t-cap">Принцип 02</span><p><b>Одна основа — много продуктов.</b> Бренд един, платформы и плотность интерфейса — разные.</p></article>
+      <article class="rv"><span class="t-cap">Принцип 03</span><p><b>Сразу в код.</b> Каждое решение в Figma имеет имя и токен, понятные разработчику.</p></article>
+    </div>
+    <div class="trans rv" style="margin-top:var(--s5)">
+      <div><b>Фирменные цвета</b><i>→</i><span>Палитра с ролями: фон, текст, акцент, статусы — для светлой и тёмной темы</span></div>
+      <div><b>Фирменный шрифт</b><i>→</i><span>Шкала типографики для экранов разной плотности</span></div>
+      <div><b>Фирменная графика</b><i>→</i><span>Иконки, 3D-иконки и иллюстрации в одном стиле</span></div>
+      <div><b>Тон бренда</b><i>→</i><span>Правила микротекстов: ошибки, пустые состояния, подтверждения</span></div>
+    </div>
+  </section>
+
+  <!-- 03 · Токены -->
+  <section class="section wrap" id="tokens" data-nav="tokens">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">03 · Токены и темы</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Три уровня токенов и одно строгое правило</h2>
+      </div>
+      <div class="r">
+        <p class="t-lead muted rv">Примитивы хранят значения бренда, семантика описывает назначение, компонентные токены — конкретный элемент. Продукты работают только с семантикой: менять компонентные токены «под себя» нельзя, иначе система снова расползётся.</p>
+        <div class="rows rv" style="margin-top:var(--s5)">
+          <div><b>Figma Variables</b><span>Токены живут в переменных Figma и одинаково называются в коде</span></div>
+          <div><b>Темы</b><span>Светлая и тёмная — это переключение семантики, а не перекраска макетов</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="sds-stage rv" style="margin-top:var(--s5)">
+      <div class="tiers" id="tiers">
+        <div class="tier"><span>Примитивы</span>
+          <div class="tok" data-t="gold"><s style="background:#C9B48A"></s>gold.400<em>#C9B48A</em></div>
+          <div class="tok" data-t="ink"><s style="background:#141619"></s>graphite.900<em>#141619</em></div>
+          <div class="tok" data-t="paper"><s style="background:#F6F4EF"></s>stone.50<em>#F6F4EF</em></div>
+          <div class="tok" data-t="r"><s style="border-radius:12px"></s>radius.12<em>12px</em></div>
+        </div>
+        <div class="tier"><span>Семантика</span>
+          <div class="tok" data-t="gold"><s style="background:#C9B48A"></s>action.primary</div>
+          <div class="tok" data-t="ink"><s style="background:#141619"></s>text.primary</div>
+          <div class="tok" data-t="paper"><s style="background:#F6F4EF"></s>surface.base</div>
+          <div class="tok" data-t="r"><s style="border-radius:12px"></s>radius.control</div>
+        </div>
+        <div class="tier"><span>Компоненты</span>
+          <div class="tok" data-t="gold"><s style="background:#C9B48A"></s>button.primary.bg</div>
+          <div class="tok" data-t="ink"><s style="background:#141619"></s>button.primary.text</div>
+          <div class="tok" data-t="paper"><s style="background:#F6F4EF"></s>card.bg</div>
+          <div class="tok" data-t="r"><s style="border-radius:12px"></s>button.radius</div>
+        </div>
+      </div>
+    </div>
+    <p class="t-cap sds-cap rv">Наведите на токен: видно, как значение бренда проходит до конкретного компонента. Имена токенов — иллюстрация структуры.</p>
+    <div class="themes rv">
+      <div class="th l"><span class="t-cap" style="color:inherit;opacity:.6">Светлая тема</span><div class="bar"></div><div class="card"><i></i><i style="width:40px"></i></div><div class="card"><i></i><i style="width:40px"></i></div><span class="btn">Заказать пропуск</span></div>
+      <div class="th d"><span class="t-cap" style="color:inherit;opacity:.6">Тёмная тема</span><div class="bar"></div><div class="card"><i></i><i style="width:40px"></i></div><div class="card"><i></i><i style="width:40px"></i></div><span class="btn">Заказать пропуск</span></div>
+    </div>
+  </section>
+
+  <!-- 04 · Компоненты -->
+  <section class="section wrap" id="components" data-nav="components">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">04 · Компоненты</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Компонент — это все его состояния, а не одна картинка</h2>
+      </div>
+      <div class="r">
+        <p class="t-lead muted rv">Компоненты собраны атомарно: из базовых элементов — поля, карточки, списки, затем — готовые блоки экранов. У каждого описаны состояния, поведение и правила использования, чтобы разработчик не угадывал.</p>
+        <div class="rows rv" style="margin-top:var(--s5)">
+          <div><b>Атомы</b><span>Кнопки, поля, чекбоксы, иконки, бейджи</span></div>
+          <div><b>Молекулы</b><span>Поиск, карточка, строка списка, фильтры</span></div>
+          <div><b>Организмы</b><span>Шапки, таббары, формы, таблицы, пустые состояния</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="sds-stage rv" style="margin-top:var(--s5)">
+      <div class="anat" aria-label="Состояния кнопки">
+        <figure><span class="b">Заказать</span><figcaption>Default</figcaption></figure>
+        <figure><span class="b hov">Заказать</span><figcaption>Hover</figcaption></figure>
+        <figure><span class="b prs">Заказать</span><figcaption>Pressed</figcaption></figure>
+        <figure><span class="b dis">Заказать</span><figcaption>Disabled</figcaption></figure>
+        <figure><span class="b ld"><i></i>Загрузка</span><figcaption>Loading</figcaption></figure>
+      </div>
+    </div>
+    <p class="t-cap sds-cap rv">Button / Primary: пять состояний на одних токенах.</p>
+  </section>
+
+  <!-- 05 · UI-киты -->
+  <section class="section wrap" id="kits" data-nav="kits">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">05 · UI-киты платформ</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Одна основа — шесть китов под разные продукты</h2>
+      </div>
+      <div class="r">
+        <p class="t-lead muted rv">Продукты Sminex очень разные: приложение для жителей, портал для подрядчиков, строительная модель, учётные системы. Вместо одного кита на всё — шесть китов на общих токенах, каждый под свою платформу и плотность интерфейса.</p>
+      </div>
+    </div>
+    <div class="sds-stage rv" style="margin-top:var(--s5)">
+      <div class="eco-root"><b>SDS · токены и принципы</b></div>
+      <div class="eco">
+        <div><b>Web / PWA</b><span>Клиентские веб-сервисы и прогрессивные приложения</span></div>
+        <div><b>Web External</b><span>Внешние порталы для партнёров и подрядчиков</span></div>
+        <div><b>Mobile</b><span>Приложения для жителей на iOS и Android</span></div>
+        <div><b>BIM</b><span>Интерфейсы для работы со строительной моделью</span></div>
+        <div><b>1С</b><span>Плотные учётные интерфейсы корпоративных систем</span></div>
+        <div><b>Ant Design v6</b><span>Кит со своим Storybook для интерфейсов, которые генерирует ИИ</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · Figma ↔ код -->
+  <section class="section wrap" id="code" data-nav="code">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">06 · Figma ↔ код</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Один источник правды для дизайна и разработки</h2>
+      </div>
+      <div class="r">
+        <p class="t-lead muted rv">Провёл аудит Figma ↔ Storybook ↔ Ant Design: сравнил компоненты по составу, именам и состояниям. Расхождения собрал в gap-анализ и превратил в бэклог по приоритетам — что чинить в макетах, что в коде.</p>
+      </div>
+    </div>
+    <div class="flows rv">
+      <div><span class="t-cap">Было</span><ol><li>Компонент в Figma</li><li>Свой вариант в коде</li><li>Разные имена</li><li>Правки в двух местах</li></ol></div>
+      <div><span class="t-cap">Стало</span><ol class="new"><li>Одно имя и токены</li><li>Ссылка Figma ↔ Storybook</li><li>Правка в одном месте</li></ol></div>
+    </div>
+  </section>
+
+  <!-- 07 · Внедрение -->
+  <section class="section wrap" id="adoption" data-nav="adoption">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">07 · Внедрение и управление</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">Система работает, только когда ей пользоваться проще, чем обойти</h2>
+      </div>
+      <div class="r">
+        <p class="t-lead muted rv">Гибридная модель: ядро — токены и базовые компоненты — веду я, продуктовые дизайнеры предлагают новые компоненты через понятный процесс. Использование SDS вошло в DoR/DoD дизайн-задач команды из 10 дизайнеров.</p>
+        <div class="rows rv" style="margin-top:var(--s5)">
+          <div><b>Метрика внедрения</b><span>Доля экранов на компонентах SDS против самописных: <span class="fill">~85%</span></span></div>
+          <div><b>Онбординг</b><span>Новый дизайнер собирает экран на системе в первую неделю</span></div>
+        </div>
+      </div>
+    </div>
+    <ol class="flowline rv">
+      <li><b>Запрос</b><span>Продукту нужен новый компонент</span></li>
+      <li><b>Проверка</b><span>Нет ли готового решения в SDS</span></li>
+      <li><b>Проектирование</b><span>Компонент на токенах, все состояния</span></li>
+      <li><b>Ревью</b><span>Дизайн-ревью и согласование с разработкой</span></li>
+      <li><b>Релиз</b><span>Публикация в библиотеке и описание изменений</span></li>
+    </ol>
+  </section>
+
+  <!-- 08 · ИИ -->
+  <section class="section wrap" id="ai" data-nav="ai">
+    <div class="split">
+      <div class="l">
+        <span class="t-cap rv">08 · ИИ и автоматизация</span>
+        <h2 class="t-h2 rv" style="margin-top:var(--s2)">ИИ берёт рутину, система задаёт рамки</h2>
+      </div>
+      <div class="r">
+        <p class="t-lead muted rv">Дизайн-система — идеальная опора для ИИ: у неё есть имена, правила и токены. Поэтому её и проверял, и расширял вместе с ИИ.</p>
+        <div class="rows rv" style="margin-top:var(--s5)">
+          <div><b>Аудит иконок с Claude</b><span>96 иконок, 4 395 использований во всех компонентах, найдено 11 устаревших копий</span></div>
+          <div><b>Переход на Tabler Icons</b><span>Единая открытая библиотека вместо разрозненных наборов</span></div>
+          <div><b>Кит на Ant Design v6</b><span>Интерфейсы, которые генерирует ИИ, сразу собираются из компонентов системы</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 · Итоги -->
+  <section class="section wrap" id="results" data-nav="results">
+    <span class="t-cap rv">09 · Итоги</span>
+    <h2 class="t-h2 rv" style="margin-top:var(--s2)">Одна система вместо набора стилей</h2>
+    <div class="kpis">
+      <div class="kpi rv"><div class="n">6</div><div class="l">UI-китов на одной базе токенов</div></div>
+      <div class="kpi rv"><div class="n">2</div><div class="l">темы — светлая и тёмная — через семантику</div></div>
+      <div class="kpi rv"><div class="n">4</div><div class="l">продуктовых кластера на общей основе</div></div>
+    </div>
+    <div class="split" style="margin-top:var(--s6)">
+      <div class="l"><span class="t-cap rv">Выводы</span></div>
+      <div class="r">
+        <div class="rows rv">
+          <div><b>Система — это продукт</b><span>У неё есть пользователи — дизайнеры и разработчики, — и её тоже нужно исследовать и тестировать</span></div>
+          <div><b>Начинать с семантики</b><span>Палитру легко нарисовать, договориться о ролях цветов — сложнее и важнее</span></div>
+          <div><b>Аудит окупается</b><span>Цифры расхождений лучше всего объясняют бизнесу, зачем нужна система</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="c-end wrap" id="next" data-nav="next">
+    <h2 class="t-display rv">Обсудим вашу задачу?</h2>
+    <div class="links t-lead rv">
+      <a class="link" href="../index.html#contact">Написать</a>
+      <a class="link" href="sminex-comfort.html">Кейс Sminex Comfort</a>
+      <a class="link" href="../index.html#work">Все работы</a>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap t-cap"><span>© 2026 Александр Ефремов · Москва</span><button class="theme-btn" data-theme-toggle>Тема: авто</button></div></footer>
+
+<nav class="toolbar" aria-label="Навигация по кейсу">
+  <a class="mono-mark" href="../index.html#work" aria-label="Все работы">←</a>
+  <span class="sep"></span>
+  <a href="#process" data-to="process">Процесс</a>
+  <a href="#audit" data-to="audit" class="opt">Аудит</a>
+  <a href="#tokens" data-to="tokens">Токены</a>
+  <a href="#kits" data-to="kits" class="opt">Киты</a>
+  <a href="#adoption" data-to="adoption" class="opt">Внедрение</a>
+  <a href="#results" data-to="results">Итоги</a>
+</nav>
+
+<script src="../assets/main.js"></script>
+<script>
+  // связь токенов между уровнями: наведение подсвечивает всю цепочку
+  (() => {
+    const t = document.getElementById('tiers'); if (!t) return;
+    t.querySelectorAll('.tok').forEach(el => {
+      const on = v => t.querySelectorAll(`.tok[data-t="${el.dataset.t}"]`).forEach(x => x.classList.toggle('hl', v));
+      el.addEventListener('mouseenter', () => on(true)); el.addEventListener('mouseleave', () => on(false));
+    });
+  })();
+</script>
+</body>
+</html>

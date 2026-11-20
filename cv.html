@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CV — Александр Ефремов, Senior / Lead Product Designer</title>
+<meta name="description" content="Резюме Александра Ефремова: Lead UX/UI-дизайнер, 10+ лет, дизайн-системы и команды.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .cv{max-width:880px;margin:0 auto;padding:var(--s5) var(--pad) var(--s6)}
+  .cv-top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+  .cv h1{margin-top:var(--s4)}
+  .cv .contacts{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:var(--s3)}
+  .cv section{margin-top:var(--s5);padding-top:var(--s3);border-top:1px solid var(--line)}
+  .cv h2{font-size:13px;line-height:20px;font-weight:500;letter-spacing:.01em;color:var(--muted);margin-bottom:var(--s2)}
+  .job+.job{margin-top:var(--s4)}
+  .job-h{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .job-h b{font-weight:500}
+  .cv ul{list-style:none}
+  .cv li{position:relative;padding-left:16px;margin-top:6px}
+  .cv li::before{content:"";position:absolute;left:0;top:12px;width:6px;height:1px;background:var(--muted)}
+  .print-btn{background:none;border:0;font:inherit;color:inherit;cursor:pointer;padding:0}
+  @media print{
+    :root{--bg:#fff;--ink:#000;--muted:#555;--line:#ddd}
+    .no-print{display:none!important}
+    .cv{padding:0;max-width:none}
+    body{font-size:12px;line-height:18px}
+    .cv h1{font-size:28px;margin-top:0}
+    .cv section{margin-top:16px;padding-top:8px;break-inside:avoid-page}
+    a{text-decoration:none}
+  }
+</style>
+<script>try{const t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<main class="cv">
+  <div class="cv-top t-cap no-print">
+    <a class="link" href="index.html">← Портфолио</a>
+    <button class="print-btn link" type="button" onclick="window.print()">Сохранить в PDF</button>
+  </div>
+
+  <h1 class="t-h1">Александр Ефремов</h1>
+  <p class="t-lead" style="margin-top:8px">Senior / Lead Product Designer · продукты, дизайн-системы, команды</p>
+  <div class="contacts muted">
+    <span>Москва · офис, гибрид, удалённо</span>
+    <a class="link" href="mailto:alex.efov@gmail.com">alex.efov@gmail.com</a>
+    <a class="link" href="https://t.me/alexefov">Telegram: alexefov</a>
+    <a class="link" href="tel:+79028834125">+7 902 883-41-25</a>
+    <a class="link" href="https://www.behance.net/alexefov">behance.net/alexefov</a>
+  </div>
+
+  <section>
+    <h2>Профиль</h2>
+    <p>Продуктовый дизайнер с 10+ годами опыта в вебе, iOS и Android; два года руководил командой из 10 дизайнеров. Вместе с командой веду дизайн ключевых продуктов, сам проектирую основные сценарии и дизайн-систему вплоть до UI и помогаю дизайнерам расти через ревью, менторство и процессы. Ищу роль Senior или Lead-дизайнера в продуктовой команде.</p>
+  </section>
+
+  <section>
+    <h2>Ключевые достижения</h2>
+    <ul>
+      <li>С нуля построил UX/UI-направление в Sminex: команда из 10 дизайнеров, четыре продуктовых кластера, 30+ проектов.</li>
+      <li>Создал дизайн-систему SDS: токены и шесть UI-китов для веба, мобильных приложений, BIM и 1С, включая кит на Ant Design v6 для интерфейсов, которые генерирует ИИ.</li>
+      <li>Вёл дизайн двух ключевых продуктов: приложения для клиентов Sminex Comfort (вместе со Sminex Club) и «Портала строителя» для подрядчиков.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Опыт</h2>
+    <div class="job">
+      <div class="job-h"><b>Sminex · Руководитель группы UX/UI-дизайна</b><span class="muted">09.2024 — 10.2026</span></div>
+      <ul>
+        <li>Создал UX/UI-направление и команду из 10 дизайнеров: найм, распределение задач, наставничество, дизайн-ревью.</li>
+        <li>Отвечал за дизайн четырёх продуктовых кластеров и 30+ проектов: клиентские приложения, CRM/ERP, BIM, 1С, корпоративные сервисы.</li>
+        <li>Внедрил DoR/DoD и работу в Jira, наладил взаимодействие с аналитиками, разработкой и подрядчиками.</li>
+        <li>Дизайн-система SDS — автор и лид: от брендбука и токенов до UI-китов и кита на Ant Design v6 со своим Storybook; аудит Figma ↔ Storybook ↔ Ant Design.</li>
+        <li>С Claude провёл аудит иконок во всех компонентах Figma: 96 иконок, 4 395 использований, 11 устаревших копий.</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-h"><b>Sminex · Старший UX/UI-дизайнер</b><span class="muted">11.2022 — 09.2024</span></div>
+      <ul>
+        <li>Все разделы первой версии Sminex Comfort, затем его переработка.</li>
+        <li>Сценарии, структура, прототипы и UI корпоративных веб-продуктов и мобильных приложений.</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-h"><b>Нотамедиа · Продуктовый дизайнер</b><span class="muted">06.2021 — 10.2022</span></div>
+      <ul>
+        <li>Платформа МСП: 35+ сервисов и около 12 000 поддерживаемых макетов, UI-кит и документация.</li>
+        <li>«Календарь событий для бизнеса», BI-аналитика на Visiology.</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-h"><b>Продуктовые проекты · UX/UI-дизайнер</b><span class="muted">03.2020 — 06.2021</span></div>
+      <ul>
+        <li>Unity Trade Solutions, Synergy Digital, Regym — в каждом проекте строил дизайн-систему.</li>
+      </ul>
+    </div>
+    <div class="job">
+      <div class="job-h"><b>DP Soft · UX/UI-дизайнер</b><span class="muted">08.2015 — 03.2020</span></div>
+      <ul>
+        <li>Веб- и мобильные продукты, интерфейсная анимация; Borealis (CRM), DP Plasmonic (CAD); наставлял двух младших дизайнеров.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Экспертиза</h2>
+    <ul>
+      <li><b>Руководство и Design Ops:</b> направление с нуля, найм и менторство, дизайн-ревью, DoR/DoD, Jira, стейкхолдеры и подрядчики.</li>
+      <li><b>Дизайн-системы:</b> брендбук → токены → UI-киты, темы, Figma Variables, Figma ↔ Storybook, Ant Design v6.</li>
+      <li><b>Продукт:</b> B2C и enterprise (CRM/ERP, BIM, 1С), Web, iOS, Android, Research, CJM, JTBD, информационная архитектура.</li>
+      <li><b>ИИ в дизайне:</b> UI-кит для ИИ-генерации, аудит и прототипы с ChatGPT, Codex и Claude, 3D-иконки.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Инструменты</h2>
+    <p>Figma (Auto Layout, Variables, токены, плагины), Storybook, Jira, Miro, Axure, Photoshop, Illustrator, After Effects, ChatGPT, Codex, Claude, основы HTML/CSS.</p>
+  </section>
+
+  <section>
+    <h2>Образование</h2>
+    <ul>
+      <li>ВлГУ им. А. Г. и Н. Г. Столетовых — дизайн, изобразительное искусство и реставрация</li>
+      <li>2024 — «Паттерны дизайн-менеджмента», Bang Bang Education</li>
+      <li>2023 — «Проектирование интерфейсов 1С в Figma», Infostart</li>
+      <li>2020 — «UX-дизайн и веб-дизайн», Skillbox</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Языки</h2>
+    <p>Русский — родной. Английский — базовый.</p>
+  </section>
+</main>
+</body>
+</html>

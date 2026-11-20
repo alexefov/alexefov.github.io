@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Прототип 2 — Колода работ</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  main{overflow-x:clip}
+  .lab-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;padding-top:16px;color:var(--muted)}
+  .h2-hero{min-height:calc(100svh - 36px);display:flex;flex-direction:column;padding:var(--s4) 0}
+  .h2-top{display:flex;align-items:baseline;gap:24px}
+  .h2-top .name{font-weight:500}
+  .h2-top .st{flex:1;font-size:13px;line-height:20px;color:var(--muted)}
+  .h2-top .lk{display:flex;gap:24px}
+  .h2-grid{flex:1;display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:center;margin-top:var(--s4)}
+  .h2-grid>*{min-width:0}
+  .txt{grid-column:1/6}
+  .txt h1{font-size:clamp(40px,min(5vw,10vh),84px);line-height:1;letter-spacing:-.04em}
+  .txt h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}
+  .txt h1 .ln>span{display:block;transform:translateY(105%);animation:mask-in .9s var(--ease) forwards}
+  .txt h1 .ln:nth-child(2)>span{animation-delay:.08s}.txt h1 .ln:nth-child(3)>span{animation-delay:.16s}
+  .txt p{margin-top:var(--s4);max-width:40ch;color:var(--muted);opacity:0;animation:fade .8s .5s var(--ease) forwards}
+  .txt p b{color:var(--ink);font-weight:500}
+
+  /* ===== колода ===== */
+  .deck{grid-column:6/13;position:relative;width:100%;aspect-ratio:1/.86;opacity:0;animation:fade .9s .35s var(--ease) forwards}
+  .cd{--x:0%;--y:0%;--s:1;position:absolute;left:21%;top:7%;width:58%;aspect-ratio:4/5;border-radius:24px;overflow:hidden;display:block;color:#EDECE8;box-shadow:inset 0 0 0 1px rgba(237,236,232,.1);
+      transform:translate(var(--x),var(--y)) scale(var(--s));transform-origin:50% 50%;
+      transition:transform .8s cubic-bezier(.2,.85,.2,1),filter .4s var(--ease);will-change:transform}
+  .cd:focus-visible{outline:2px solid var(--sel);outline-offset:4px}
+  /* стопка: задние карты выглядывают сверху цветом своей сцены */
+  .cd[data-i="0"]{z-index:3}
+  .cd[data-i="1"]{z-index:2;--y:-9%;--s:.92}
+  .cd[data-i="2"]{z-index:1;--y:-17.5%;--s:.84}
+  /* веер: три карты в ряд */
+  .deck.fan .cd{--s:.52}
+  .deck.fan .cd[data-i="0"]{--x:0%;--y:-8%}
+  .deck.fan .cd[data-i="1"]{--x:-62%;--y:-8%}
+  .deck.fan .cd[data-i="2"]{--x:62%;--y:-8%}
+  .deck.fan .cd[data-i="1"]{transition-delay:.03s}.deck.fan .cd[data-i="2"]{transition-delay:.06s}
+  .deck.fan.pick .cd:not(.on){filter:saturate(.6) brightness(.7)}
+  .deck.fan .cd.on{--y:-11%}
+
+  .sc{position:absolute;inset:0}
+  .c-comfort{background:#15130F}
+  .c-portal{background:#1F2124}
+  .c-sds{background:#141619}
+  .c-comfort img{position:absolute;left:50%;bottom:-16%;width:58%;transform:translateX(-50%)}
+  .c-comfort .sc::after{content:"";position:absolute;inset:auto 0 0;height:30%;background:linear-gradient(transparent,#15130F 80%)}
+  .c-portal img{position:absolute;left:14%;top:20%;width:128%;max-width:none;border-radius:12px}
+  .c-sds .sheet{position:absolute;left:11%;right:11%;top:11%;display:flex;flex-direction:column;gap:9px}
+  .c-sds .sheet img{display:block;width:100%;height:auto;border-radius:10px}
+  .c-sds .pair{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .c-sds .tok{display:flex;gap:7px;margin-bottom:4px}
+  .c-sds .tok i{width:20px;height:20px;border-radius:50%;border:1px solid rgba(237,236,232,.25)}
+  /* подпись внутри карты — только у верхней карты в стопке */
+  .in-cap{position:absolute;left:22px;right:22px;bottom:18px;display:flex;justify-content:space-between;gap:12px;font-size:13px;line-height:20px;transition:opacity .3s}
+  .in-cap b{font-weight:500}.in-cap span{color:rgba(237,236,232,.55)}
+  .cd:not([data-i="0"]) .in-cap,.deck.fan .in-cap{opacity:0}
+
+  /* подписи под веером — обычным кеглем, не масштабируются */
+  .caps{position:absolute;left:0;right:0;top:76%;height:0}
+  .cp{position:absolute;width:29%;transform:translateX(-50%);font-size:13px;line-height:20px;opacity:0;transition:opacity .35s var(--ease),color .2s;pointer-events:none}
+  .cp b{display:block;font-weight:500}.cp span{color:var(--muted)}
+  .cp[data-i="0"]{left:50%}.cp[data-i="1"]{left:14%}.cp[data-i="2"]{left:86%}
+  .deck.fan .cp{opacity:1;transition-delay:.25s}
+  .deck.fan.pick .cp:not(.on){opacity:.4;transition-delay:0s}
+  .cp .tag{display:inline-block;margin-left:6px;padding:0 6px;border:1px solid var(--line);border-radius:6px;font-size:12px;line-height:18px;color:var(--muted)}
+
+  .h2-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 32px;margin-top:var(--s4);padding-top:var(--s3);border-top:1px solid var(--line);font-size:13px;line-height:20px;color:var(--muted);opacity:0;animation:fade .8s .6s var(--ease) forwards}
+  .h2-foot .co{display:flex;flex-wrap:wrap;gap:8px 20px}
+
+  @media (max-width:900px){
+    .h2-top .st{display:none}.h2-top{justify-content:space-between}
+    .h2-grid{grid-template-columns:1fr;gap:var(--s5)}
+    .txt,.deck{grid-column:1}
+    .deck{aspect-ratio:1/1}
+    .cd{left:18%;width:64%}
+    .deck.fan .cd{--s:.6}.deck.fan .cd[data-i="1"]{--x:-52%}.deck.fan .cd[data-i="2"]{--x:52%}
+    .in-cap span{display:none}.in-cap b{white-space:nowrap}
+    .caps{top:84%}.cp{width:33%}.cp span{display:none}.cp[data-i="1"]{left:18%}.cp[data-i="2"]{left:82%}
+  }
+  @media (prefers-reduced-motion:reduce){.txt h1 .ln>span,.txt p,.deck,.h2-foot{animation:none;transform:none;opacity:1}.cd,.cp{transition:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="lab-top t-cap"><a class="link" href="hero-p1.html">← Прототип 1</a><span>Прототип 2 · «Колода работ»</span><a class="link" href="../index.html">Главная →</a></div>
+  <section class="h2-hero">
+    <div class="h2-top">
+      <span class="name">Александр Ефремов</span>
+      <span class="st">Открыт к ролям Senior и Lead · Москва, гибрид или удалённо</span>
+      <span class="lk"><a class="link" href="../cv.html">CV</a><a class="link" href="../index.html#contact">Написать</a></span>
+    </div>
+    <div class="h2-grid">
+      <div class="txt">
+        <h1 class="t-display" aria-label="Проектирую продукты, системы и команды">
+          <span class="ln"><span>Проектирую</span></span>
+          <span class="ln"><span>продукты, системы</span></span>
+          <span class="ln"><span>и команды</span></span>
+        </h1>
+        <p><b>Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: проектирую сам и помогаю команде расти.</p>
+      </div>
+
+      <div class="deck" id="deck" role="list" aria-label="Кейсы">
+        <a class="cd c-comfort" data-i="0" href="../cases/sminex-comfort.html" role="listitem" aria-label="Sminex Comfort — кейс">
+          <div class="sc"><img src="../assets/img/comfort/layers/base.jpg" alt="" width="508" height="1022"></div>
+          <div class="in-cap"><b>Sminex Comfort</b><span>и ещё 2 кейса</span></div>
+        </a>
+        <a class="cd c-portal" data-i="1" href="../cases/portal.html" role="listitem" aria-label="Портал строителя — кейс">
+          <div class="sc"><img src="../assets/img/portal/portal-overview.png" alt="" width="1600" height="1000"></div>
+        </a>
+        <a class="cd c-sds" data-i="2" href="../cases/design-system.html" role="listitem" aria-label="Sminex Design System — кейс">
+          <div class="sc"><div class="sheet">
+            <div class="tok"><i style="background:#EDECE8"></i><i style="background:#C9B48A"></i><i style="background:#4A4740"></i><i style="background:#2E7BF6"></i></div>
+            <img src="../assets/img/comfort/layers/search.jpg" alt="" width="436" height="60">
+            <img src="../assets/img/comfort/layers/card.jpg" alt="" width="436" height="199">
+            <div class="pair"><img src="../assets/img/comfort/layers/card-transport.jpg" alt="" width="210" height="117"><img src="../assets/img/comfort/layers/card-people.jpg" alt="" width="210" height="117"></div>
+            <img src="../assets/img/comfort/layers/button.jpg" alt="" width="436" height="65">
+          </div></div>
+        </a>
+        <div class="caps" aria-hidden="true">
+          <div class="cp" data-i="1"><b>Портал строителя</b><span>Веб-портал · Lead</span></div>
+          <div class="cp" data-i="0"><b>Sminex Comfort</b><span>iOS и Android · Lead</span></div>
+          <div class="cp" data-i="2"><b>Sminex Design System</b><span>Токены и 6 UI-китов</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="h2-foot"><span>Опыт в</span><div class="co"><span>Sminex</span><span>Нотамедиа</span><span>Unity Trade Solutions</span><span>Synergy Digital</span><span>Regym</span><span>DP Soft</span></div></div>
+  </section>
+</main>
+<script>
+(() => {
+  const deck = document.getElementById('deck');
+  const cards = [...deck.querySelectorAll('.cd')], caps = [...deck.querySelectorAll('.cp')];
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const pick = i => {
+    deck.classList.toggle('pick', i != null);
+    cards.forEach(c => c.classList.toggle('on', c.dataset.i === String(i)));
+    caps.forEach(c => c.classList.toggle('on', c.dataset.i === String(i)));
+  };
+  const fan = v => { deck.classList.toggle('fan', v); if (!v) pick(null); };
+  if (fine) {
+    deck.addEventListener('pointerenter', () => fan(true));
+    deck.addEventListener('pointerleave', () => fan(false));
+    cards.forEach(c => { c.addEventListener('pointerenter', () => deck.classList.contains('fan') && pick(c.dataset.i)); c.addEventListener('pointerleave', () => pick(null)); });
+  } else {
+    // тач: первый тап раскладывает колоду, второй открывает кейс
+    cards.forEach(c => c.addEventListener('click', e => { if (!deck.classList.contains('fan')) { e.preventDefault(); fan(true); } }));
+    document.addEventListener('click', e => { if (!deck.contains(e.target)) fan(false); });
+  }
+  cards.forEach(c => { c.addEventListener('focus', () => { fan(true); pick(c.dataset.i); }); c.addEventListener('blur', () => setTimeout(() => { if (!deck.contains(document.activeElement)) fan(false); }, 0)); });
+})();
+</script>
+</body>
+</html>

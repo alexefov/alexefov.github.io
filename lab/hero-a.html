@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Прототип A — Слои продукта</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  .lab-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;padding-top:var(--s4)}
+  .lab-hero>*{min-width:0}
+  .lab-hero{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:center;min-height:calc(100svh - 120px);padding:var(--s4) 0 var(--s6)}
+  .lab-hero .txt{grid-column:1/6}
+  .lab-hero .txt h1{font-size:clamp(36px,min(4.2vw,9vh),72px);line-height:1.04;letter-spacing:-.035em}
+  .lab-hero .txt p{margin-top:var(--s3);max-width:42ch}
+  .lab-hero .ill{grid-column:6/13}
+
+  /* ===== Слои продукта ===== */
+  .la{--ac:var(--ink);--on:var(--bg);--rc:12px;--gp:10px;--hl:#0D99FF;position:relative}
+  .la-scene{perspective:2600px;perspective-origin:50% 30%;padding:24px 0}
+  .la-stack{position:relative;aspect-ratio:16/10.5;width:100%;transform-style:preserve-3d;transition:transform 1s var(--ease)}
+  .la.open .la-stack{transform:translateY(10%) rotateX(56deg) rotateZ(-36deg) scale(.64)}
+  .plate{position:absolute;inset:0;border-radius:18px;transition:transform 1s var(--ease),opacity .6s var(--ease),box-shadow .3s,outline-color .2s;
+    outline:1.5px solid transparent;outline-offset:6px}
+  .plate .tag{position:absolute;left:0;top:-30px;font-size:13px;line-height:20px;font-weight:500;color:var(--muted);opacity:0;transition:opacity .4s .3s;white-space:nowrap}
+  .la.open .plate .tag{opacity:1}
+  /* закрыто: виден только слой экранов */
+  .p-tokens,.p-comps,.p-user{opacity:0}
+  .la.open .p-tokens,.la.open .p-comps,.la.open .p-user{opacity:1}
+  .la.open .p-tokens{transform:translateZ(0)}
+  .la.open .p-comps{transform:translateZ(90px)}
+  .la.open .p-screens{transform:translateZ(180px)}
+  .la.open .p-user{transform:translateZ(270px)}
+  .la.open .plate:not(.p-user){background:color-mix(in srgb,var(--bg) 88%,transparent);box-shadow:0 0 0 1px var(--line)}
+  .la.focus .plate{opacity:.18}
+  .la.focus .plate.hl{opacity:1;outline-color:var(--hl)}
+  /* токены */
+  .p-tokens{display:grid;grid-template-columns:repeat(3,1fr);gap:8%;align-items:center;padding:10%}
+  .tk-col{display:flex;flex-direction:column;gap:10px;align-items:center}
+  .tk-col span{font-size:12px;color:var(--muted)}
+  .tk-col .sws{display:flex;gap:6px}
+  .tk-col .sws i{width:26px;height:26px;border-radius:50%;border:1px solid var(--line)}
+  .tk-col .rads{display:flex;gap:6px}
+  .tk-col .rads i{width:26px;height:26px;border:1.5px solid var(--ink);border-right:0;border-bottom:0}
+  .tk-col .gaps{display:flex;gap:var(--gp);transition:gap .5s}
+  .tk-col .gaps i{width:8px;height:26px;background:color-mix(in srgb,var(--ink) 30%,transparent);border-radius:2px}
+  /* компоненты */
+  .p-comps{display:grid;grid-template-columns:1fr 1fr;gap:6%;padding:9% 10%;align-content:center}
+  .p-comps .c-btn{height:28px}
+  .p-comps .c-input{height:26px}
+  .p-comps .c-card{min-height:70px}
+  .p-comps .c-row{height:34px}
+  /* экраны */
+  .p-screens{display:grid;grid-template-columns:minmax(0,2.6fr) minmax(0,1fr);gap:5%;align-items:end;padding:0}
+  .p-screens .sf figcaption{margin-bottom:6px}
+  /* пользователь */
+  .p-user svg.path{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .p-user path{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-dasharray:4 6;opacity:.6}
+  .p-user .cur{position:absolute;left:72%;top:74%;display:flex;color:var(--ink)}
+  .p-user .cur em{font-style:normal;margin:14px 0 0 -2px;background:var(--ink);color:var(--bg);font-size:12px;line-height:18px;font-weight:500;padding:0 6px;border-radius:6px;white-space:nowrap}
+  .p-user .dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--ac);transform:translate(-50%,-50%);transition:background .5s}
+  /* легенда */
+  .la-legend{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);margin-top:8px}
+  .la-legend li{padding:12px 12px 12px 0;cursor:default;transition:color .2s}
+  .la-legend li+li{padding-left:12px;border-left:1px solid var(--line)}
+  .la-legend b{display:block;font-weight:500}
+  .la-legend span{display:block;font-size:13px;line-height:20px;color:var(--muted)}
+  .la.focus .la-legend li{color:var(--muted)}.la.focus .la-legend li.hl{color:var(--ink)}
+  .la-hint{font-size:13px;line-height:20px;color:var(--muted);margin-top:8px;transition:opacity .3s}
+  .la.open .la-hint{opacity:0}
+  @media (max-width:900px){
+    .lab-hero{grid-template-columns:1fr}.lab-hero .txt,.lab-hero .ill{grid-column:1}
+    .la-legend{grid-template-columns:1fr 1fr}.la-legend li:nth-child(3){padding-left:0;border-left:0}
+    .la.open .la-stack{transform:translateY(12%) rotateX(56deg) rotateZ(-36deg) scale(.58)}
+  }
+  @media (prefers-reduced-motion:reduce){.la *{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="lab-top t-cap"><a class="link" href="../index.html">← Главная</a><span>Прототип A · «Слои продукта»</span><a class="link" href="hero-c.html">Прототип C →</a></div>
+  <section class="lab-hero">
+    <div class="txt">
+      <h1 class="t-display">Проектирую продукты, системы и команды</h1>
+      <p class="t-lead muted"><b style="color:var(--ink);font-weight:500">Senior / Lead продуктовый дизайнер, 10+ лет в Web, iOS и Android.</b> Играющий тренер: сам проектирую и помогаю команде расти.</p>
+    </div>
+
+    <div class="ill">
+      <div class="la sys" id="la" tabindex="0" role="group" aria-label="Слои продукта: токены, компоненты, экраны, пользователь">
+        <div class="la-scene">
+          <div class="la-stack">
+            <div class="plate p-tokens" data-l="tokens"><span class="tag">01 · Токены</span>
+              <div class="tk-col"><div class="sws"><i style="background:var(--ac)"></i><i style="background:var(--ink)"></i><i style="background:var(--bg)"></i></div><span>Цвет</span></div>
+              <div class="tk-col"><div class="rads"><i style="border-top-left-radius:4px"></i><i style="border-top-left-radius:var(--rc)"></i><i style="border-top-left-radius:20px"></i></div><span>Скругления</span></div>
+              <div class="tk-col"><div class="gaps"><i></i><i></i><i></i><i></i></div><span>Отступы</span></div>
+            </div>
+            <div class="plate p-comps" data-l="comps"><span class="tag">02 · Компоненты</span>
+              <span class="c-btn"></span><div class="c-input"></div>
+              <div class="c-card"><i></i><i></i></div><div class="c-row"><i></i><b></b></div>
+            </div>
+            <div class="plate p-screens" data-l="screens"><span class="tag">03 · Экраны</span>
+              <figure class="sf sf-web"><figcaption><span>Web</span><span class="sf-size">1440</span></figcaption>
+                <div class="sf-body"><div class="w-nav"><i></i><i></i><i></i><i></i></div>
+                  <div class="w-main"><div class="w-head"><i class="ttl"></i><span class="c-btn"></span></div><div class="c-input"></div>
+                    <div class="w-cards"><div class="c-card"><i></i><i></i></div><div class="c-card"><i></i><i></i></div><div class="c-card"><i></i><i></i></div></div>
+                    <div class="c-row"><i></i><b></b></div></div></div></figure>
+              <figure class="sf sf-mob"><figcaption><span>Mobile</span><span class="sf-size">390</span></figcaption>
+                <div class="sf-body"><i class="m-island"></i><div class="c-card"><i></i><i></i></div><div class="c-row"><i></i><b></b></div><span class="c-btn"></span><div class="m-tabs"><i></i><i></i><i></i><i></i></div></div></figure>
+            </div>
+            <div class="plate p-user" data-l="user"><span class="tag">04 · Пользователь</span>
+              <svg class="path" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M12 20 C 40 10, 50 60, 72 74"/></svg>
+              <span class="dot" style="left:12%;top:20%"></span><span class="dot" style="left:48%;top:42%"></span>
+              <span class="cur"><svg width="16" height="18" viewBox="0 0 18 20"><path d="M1.5 1.5l14 7.2-6.3 1.6-3 6.2z" fill="currentColor" stroke="var(--bg)" stroke-width="1.4" stroke-linejoin="round"/></svg><em>Пользователь</em></span>
+            </div>
+          </div>
+        </div>
+        <p class="la-hint">Наведите — продукт разберётся на слои</p>
+        <ol class="la-legend">
+          <li data-l="tokens"><b>Токены</b><span>Цвет, скругления, отступы</span></li>
+          <li data-l="comps"><b>Компоненты</b><span>Кнопки, карточки, поля</span></li>
+          <li data-l="screens"><b>Экраны</b><span>Веб и мобайл</span></li>
+          <li data-l="user"><b>Пользователь</b><span>Его сценарий и задачи</span></li>
+        </ol>
+        <div class="sys-tokens" style="margin-top:0">
+          <button type="button" class="tk" data-k="accent"><span class="t-cap">color.accent</span><b><s class="sw"></s><em>Графит</em></b></button>
+          <button type="button" class="tk" data-k="radius"><span class="t-cap">radius.control</span><b><s class="rd"></s><em>12</em></b></button>
+          <button type="button" class="tk" data-k="density"><span class="t-cap">space.density</span><b><s class="dn"></s><em>Средняя</em></b></button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  const la = document.getElementById('la');
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const scene = la.querySelector('.la-scene');
+  const setOpen = v => la.classList.toggle('open', v);
+  if (fine) { scene.addEventListener('pointerenter', () => setOpen(true)); la.addEventListener('pointerleave', () => { setOpen(false); focus(null); }); }
+  else scene.addEventListener('click', () => setOpen(!la.classList.contains('open')));
+  la.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(!la.classList.contains('open')); } if (e.key === 'Escape') setOpen(false); });
+  const focus = l => {
+    la.classList.toggle('focus', !!l);
+    la.querySelectorAll('[data-l]').forEach(el => el.classList.toggle('hl', el.dataset.l === l));
+  };
+  la.querySelectorAll('.la-legend li').forEach(li => {
+    li.addEventListener('mouseenter', () => { setOpen(true); focus(li.dataset.l); });
+    li.addEventListener('mouseleave', () => focus(null));
+    li.addEventListener('click', () => { setOpen(true); focus(la.classList.contains('focus') && li.classList.contains('hl') ? null : li.dataset.l); });
+  });
+  const sets = {
+    accent: [['Графит', { '--ac': 'var(--ink)' }], ['Шампань', { '--ac': '#C9B48A' }], ['Синий', { '--ac': '#3D6BFF' }]],
+    radius: [['12', { '--rc': '12px' }], ['20', { '--rc': '20px' }], ['4', { '--rc': '4px' }]],
+    density: [['Средняя', { '--gp': '10px' }], ['Свободная', { '--gp': '14px' }], ['Плотная', { '--gp': '6px' }]],
+  };
+  const idx = { accent: 0, radius: 0, density: 0 };
+  la.querySelectorAll('.tk').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.k; idx[k] = (idx[k] + 1) % 3;
+    const [name, v] = sets[k][idx[k]];
+    Object.entries(v).forEach(([p, val]) => la.style.setProperty(p, val));
+    b.querySelector('em').textContent = name;
+    // показать, что токен проходит через все слои
+    setOpen(true); focus('tokens'); setTimeout(() => focus('screens'), 650); setTimeout(() => focus(null), 1500);
+  }));
+})();
+</script>
+</body>
+</html>

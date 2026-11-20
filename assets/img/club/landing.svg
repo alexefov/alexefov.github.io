@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1800" viewBox="0 0 1440 1800">
+<rect width="1440" height="1800" rx="16" fill="#2A2824"/>
+<rect x="12" y="12" width="1416" height="1776" rx="4" fill="none" stroke="#5A564E" stroke-width="2" stroke-dasharray="10 10"/>
+<text x="50%" y="47%" text-anchor="middle" font-family="Onest, -apple-system, sans-serif" font-size="48" fill="#B8B2A6">Лендинг приложения</text>
+<text x="50%" y="53%" text-anchor="middle" font-family="Onest, -apple-system, sans-serif" font-size="28" fill="#7A756B">заглушка · PNG из Figma</text>
+</svg>

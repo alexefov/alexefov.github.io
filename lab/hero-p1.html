@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Прототип 1 — Слова-превью</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  main{overflow-x:clip}
+  .lab-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 16px;padding-top:16px;color:var(--muted)}
+  .h1-hero{min-height:calc(100svh - 36px);display:flex;flex-direction:column;padding:var(--s4) 0 var(--s4)}
+  .h1-top{display:flex;align-items:baseline;gap:24px}
+  .h1-top .name{font-weight:500}
+  .h1-top .st{flex:1;font-size:13px;line-height:20px;color:var(--muted)}
+  .h1-top .lk{display:flex;gap:24px}
+
+  .h1-grid{flex:1;display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:center;margin-top:var(--s4)}
+  .h1-grid>*{min-width:0}
+  .ttl{grid-column:1/8;font-weight:600;font-size:clamp(44px,min(7.4vw,13vh),118px);line-height:.98;letter-spacing:-.045em}
+  .ttl .ln{display:block;overflow:hidden;padding-bottom:.06em}
+  .ttl .ln>span{display:block;transform:translateY(105%);animation:mask-in .9s var(--ease) forwards}
+  .ttl .ln:nth-child(2)>span{animation-delay:.08s}.ttl .ln:nth-child(3)>span{animation-delay:.16s}.ttl .ln:nth-child(4)>span{animation-delay:.24s}
+  .ttl .rest{transition:color .35s var(--ease)}
+  .wd{font:inherit;letter-spacing:inherit;line-height:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;
+      text-decoration:underline;text-decoration-thickness:.045em;text-underline-offset:.12em;text-decoration-color:color-mix(in srgb,var(--ink) 22%,transparent);
+      transition:color .35s var(--ease),text-decoration-color .35s var(--ease)}
+  .wd:focus-visible{outline:2px solid var(--sel);outline-offset:4px;border-radius:4px}
+  /* активное слово — чернилами, остальной заголовок уходит в тень */
+  .ttl.has .rest,.ttl.has .wd:not(.on){color:color-mix(in srgb,var(--ink) 22%,transparent);text-decoration-color:transparent}
+  .ttl .wd.on{text-decoration-color:var(--ink)}
+
+  /* сцена справа: одна, содержимое меняется по слову */
+  .scene{grid-column:9/13;position:relative;aspect-ratio:4/5;max-height:72svh;justify-self:end;width:100%;border-radius:24px;background:#15130F;color:#EDECE8;overflow:hidden;
+         transition:background .6s var(--ease);opacity:0;animation:fade .9s .45s var(--ease) forwards}
+  .scene[data-k="systems"]{background:#141619}
+  .scene[data-k="teams"]{background:#1C1915}
+  .sv{position:absolute;inset:0;opacity:0;transform:translateY(16px) scale(.98);transition:opacity .45s var(--ease),transform .7s var(--ease);pointer-events:none}
+  .sv.on{opacity:1;transform:none;transition-delay:.12s}
+  .cap{position:absolute;left:24px;right:24px;bottom:20px;display:flex;justify-content:space-between;gap:16px;font-size:13px;line-height:20px;z-index:2}
+  .cap b{font-weight:500;white-space:nowrap}.cap span{color:rgba(237,236,232,.55);text-align:right}
+
+  /* продукты: настоящий экран Comfort, поднимается снизу */
+  .sv-prod img{position:absolute;left:50%;bottom:-14%;width:60%;transform:translateX(-50%);height:auto}
+  .sv-prod::after{content:"";position:absolute;inset:auto 0 0;height:34%;background:linear-gradient(transparent,#15130F 78%)}
+
+  /* системы: лист компонентов из того же продукта + токены */
+  .sv-sys .sheet{position:absolute;left:10%;right:10%;top:8%;display:flex;flex-direction:column;gap:10px}
+  .sv-sys img{display:block;width:100%;height:auto;border-radius:12px}
+  .sv-sys .pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .sv-sys .tok{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+  .sv-sys .tok i{width:22px;height:22px;border-radius:50%;border:1px solid rgba(237,236,232,.25)}
+  .sv-sys .tok em{font-style:normal;font-size:12px;line-height:16px;color:rgba(237,236,232,.55);margin-left:auto}
+  .sv-sys .sheet>*{opacity:0;transform:translateY(10px);transition:opacity .4s var(--ease),transform .6s var(--ease)}
+  .sv-sys.on .sheet>*{opacity:1;transform:none}
+  .sv-sys.on .sheet>*:nth-child(2){transition-delay:.06s}.sv-sys.on .sheet>*:nth-child(3){transition-delay:.12s}.sv-sys.on .sheet>*:nth-child(4){transition-delay:.18s}.sv-sys.on .sheet>*:nth-child(5){transition-delay:.24s}
+
+  /* команды: типографическая схема 0 → 10 */
+  .sv-team .big{position:absolute;left:24px;top:22px;font-weight:600;font-size:clamp(56px,6vw,96px);line-height:1;letter-spacing:-.04em}
+  .sv-team .big small{display:block;font-size:13px;line-height:20px;font-weight:500;letter-spacing:0;color:rgba(237,236,232,.55);margin-top:8px}
+  .sv-team .cl{position:absolute;left:24px;right:24px;top:44%;display:grid;gap:14px}
+  .sv-team .row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding-top:12px;border-top:1px solid rgba(237,236,232,.14);font-size:13px;line-height:20px}
+  .sv-team .dots{display:flex;gap:6px}
+  .sv-team .dots i{width:10px;height:10px;border-radius:50%;background:#C9B48A;transform:scale(0);transition:transform .45s var(--ease)}
+  .sv-team.on .dots i{transform:scale(1)}
+  .sv-team .dots i.me{background:#EDECE8}
+  .sv-team .dots i.sq{border-radius:3px;background:none;border:1px solid rgba(237,236,232,.5)}
+
+  .h1-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 40px;margin-top:var(--s4);padding-top:var(--s3);border-top:1px solid var(--line);font-size:13px;line-height:20px;
+           opacity:0;animation:fade .8s .6s var(--ease) forwards}
+  .h1-foot .fx{display:flex;flex-wrap:wrap;gap:8px 32px}
+  .h1-foot b{font-weight:500}
+  .h1-foot .co{display:flex;flex-wrap:wrap;gap:8px 20px;color:var(--muted)}
+
+  @media (max-width:900px){
+    .h1-top .st{display:none}.h1-top{justify-content:space-between}
+    .h1-grid{grid-template-columns:1fr;align-items:start;gap:var(--s4)}
+    .ttl,.scene{grid-column:1}
+    .scene{justify-self:stretch;max-height:none;aspect-ratio:4/4.4}
+  }
+  @media (prefers-reduced-motion:reduce){.ttl .ln>span,.scene,.h1-foot{animation:none;transform:none;opacity:1}.sv,.sv *{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="lab-top t-cap"><a class="link" href="../index.html">← Главная</a><span>Прототип 1 · «Слова-превью»</span><a class="link" href="hero-p2.html">Прототип 2 →</a></div>
+  <section class="h1-hero">
+    <div class="h1-top">
+      <span class="name">Александр Ефремов</span>
+      <span class="st">Открыт к ролям Senior и Lead · Москва, гибрид или удалённо</span>
+      <span class="lk"><a class="link" href="../cv.html">CV</a><a class="link" href="../index.html#contact">Написать</a></span>
+    </div>
+
+    <div class="h1-grid">
+      <h1 class="ttl" id="ttl" aria-label="Проектирую продукты, системы и команды">
+        <span class="ln"><span class="rest">Проектирую</span></span>
+        <span class="ln"><span><button class="wd" data-k="products" aria-controls="scene">продукты</button><span class="rest">,</span></span></span>
+        <span class="ln"><span><button class="wd" data-k="systems" aria-controls="scene">системы</button></span></span>
+        <span class="ln"><span><span class="rest">и </span><button class="wd" data-k="teams" aria-controls="scene">команды</button></span></span>
+      </h1>
+
+      <div class="scene" id="scene" data-k="products" aria-live="polite">
+        <div class="sv sv-prod on" data-k="products">
+          <img src="../assets/img/comfort/layers/base.jpg" alt="Sminex Comfort, экран «Пропуска»" width="508" height="1022">
+          <div class="cap"><b>Sminex Comfort</b><span>iOS и Android · Lead</span></div>
+        </div>
+        <div class="sv sv-sys" data-k="systems">
+          <div class="sheet">
+            <div class="tok"><i style="background:#EDECE8"></i><i style="background:#C9B48A"></i><i style="background:#4A4740"></i><i style="background:#2E7BF6"></i><em>color · radius · space</em></div>
+            <img src="../assets/img/comfort/layers/search.jpg" alt="" width="436" height="60">
+            <img src="../assets/img/comfort/layers/card.jpg" alt="" width="436" height="199">
+            <div class="pair"><img src="../assets/img/comfort/layers/card-transport.jpg" alt="" width="210" height="117"><img src="../assets/img/comfort/layers/card-people.jpg" alt="" width="210" height="117"></div>
+          </div>
+          <div class="cap"><b>Sminex Design System</b><span>Токены и 6 UI-китов</span></div>
+        </div>
+        <div class="sv sv-team" data-k="teams">
+          <div class="big">0 → 10<small>дизайнеров в UX/UI-направлении</small></div>
+          <div class="cl">
+            <div class="row"><span>Lead — я</span><span class="dots"><i class="me"></i></span></div>
+            <div class="row"><span>Дизайнеры</span><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+            <div class="row"><span>Продуктовые кластеры</span><span class="dots"><i class="sq"></i><i class="sq"></i><i class="sq"></i><i class="sq"></i></span></div>
+          </div>
+          <div class="cap"><b>Команда</b><span>Найм, менторство, ревью, DoR / DoD</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="h1-foot">
+      <div class="fx"><span><b>Senior / Lead</b> продуктовый дизайнер</span><span><b>10+ лет</b> в Web, iOS и Android</span><span><b>Играющий тренер</b>: проектирую сам и помогаю команде расти</span></div>
+      <div class="co"><span>Sminex</span><span>Нотамедиа</span><span>Unity Trade Solutions</span><span>Synergy Digital</span></div>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  const ttl = document.getElementById('ttl'), scene = document.getElementById('scene');
+  const words = [...ttl.querySelectorAll('.wd')], views = [...scene.querySelectorAll('.sv')];
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  let cur = 'products', hovering = null;
+  // точки команды появляются по очереди
+  scene.querySelectorAll('.sv-team .dots i').forEach((d, i) => d.style.transitionDelay = (.25 + i * .05) + 's');
+  function show(k, mark) {
+    cur = k;
+    scene.dataset.k = k;
+    views.forEach(v => v.classList.toggle('on', v.dataset.k === k));
+    words.forEach(w => { const on = mark && w.dataset.k === k; w.classList.toggle('on', on); w.setAttribute('aria-pressed', on); });
+    ttl.classList.toggle('has', !!mark);
+  }
+  words.forEach(w => {
+    if (fine) {
+      w.addEventListener('mouseenter', () => { hovering = w.dataset.k; show(w.dataset.k, true); });
+      w.addEventListener('mouseleave', () => { hovering = null; show(cur, false); });
+    }
+    w.addEventListener('focus', () => show(w.dataset.k, true));
+    w.addEventListener('blur', () => { if (!hovering) show(cur, false); });
+    // тап на телефоне: переключает сцену; повторный тап снимает подсветку
+    w.addEventListener('click', () => { const again = w.classList.contains('on') && !fine; show(w.dataset.k, !again); });
+  });
+})();
+</script>
+</body>
+</html>
