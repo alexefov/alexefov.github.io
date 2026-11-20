@@ -29,7 +29,13 @@
     .cv{padding:0;max-width:none}
     body{font-size:12px;line-height:18px}
     .cv h1{font-size:28px;margin-top:0}
-    .cv section{margin-top:16px;padding-top:8px;break-inside:avoid-page}
+    @page{margin:14mm 14mm}
+    .cv section{margin-top:14px;padding-top:8px}
+    .cv h2{break-after:avoid}
+    .job,.cv li{break-inside:avoid}
+    .job+.job{margin-top:12px}
+    .cv li{margin-top:3px}
+    .cv li::before{top:9px}
     a{text-decoration:none}
   }
 </style>
